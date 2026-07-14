@@ -2,7 +2,7 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [0.1.0] - 2026-07-14
+## [1.0.0] - 2026-07-15
 
 MindMemo 的首个版本，基于 Memos v0.21.0。
 
@@ -27,4 +27,4 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
-[0.1.0]: https://github.com/baduyifei/mindmemo/releases/tag/v0.1.0
+[1.0.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.0.0
