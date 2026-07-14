@@ -14,16 +14,16 @@ jobs:
   static-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2.4.0
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
         with:
-          version: 8
-      - uses: actions/setup-node@v4
+          version: 8.15.9
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
           cache: pnpm
           cache-dependency-path: "web/pnpm-lock.yaml"
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
         working-directory: web
       - name: Run eslint check
         run: pnpm lint
@@ -35,16 +35,16 @@ jobs:
   frontend-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2.4.0
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
         with:
-          version: 8
-      - uses: actions/setup-node@v4
+          version: 8.15.9
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
           cache: pnpm
           cache-dependency-path: "web/pnpm-lock.yaml"
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
         working-directory: web
       - name: Run frontend build
         run: pnpm build

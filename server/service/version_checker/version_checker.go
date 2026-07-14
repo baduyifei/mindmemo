@@ -20,17 +20,22 @@ import (
 type VersionChecker struct {
 	Store   *store.Store
 	Profile *profile.Profile
+
+	httpClient *http.Client
+	versionURL string
 }
 
 func NewVersionChecker(store *store.Store, profile *profile.Profile) *VersionChecker {
 	return &VersionChecker{
-		Store:   store,
-		Profile: profile,
+		Store:      store,
+		Profile:    profile,
+		httpClient: http.DefaultClient,
+		versionURL: "https://www.usememos.com/api/version",
 	}
 }
 
-func (*VersionChecker) GetLatestVersion() (string, error) {
-	response, err := http.Get("https://www.usememos.com/api/version")
+func (c *VersionChecker) GetLatestVersion() (string, error) {
+	response, err := c.httpClient.Get(c.versionURL)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to make http request")
 	}

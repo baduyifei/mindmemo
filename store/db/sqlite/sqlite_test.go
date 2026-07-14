@@ -38,7 +38,9 @@ func TestDeleteMemoWithConcurrentReaderKeepsLogicalCleanup(t *testing.T) {
 	// reads. SQLite VACUUM cannot run in this state, but logical cleanup can.
 	rows, err := db.db.QueryContext(ctx, "SELECT id FROM memo")
 	require.NoError(t, err)
+	defer func() { require.NoError(t, rows.Close()) }()
 	require.True(t, rows.Next())
+	require.NoError(t, rows.Err())
 
 	require.NoError(t, db.DeleteMemo(ctx, &store.DeleteMemo{ID: 1}))
 	require.NoError(t, rows.Close())
