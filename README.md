@@ -74,11 +74,13 @@ services:
   mindmemo:
     image: mindmemo:0.1.0
     container_name: mindmemo
-    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
     ports:
-      - "52301:5230"
+      - "52302:5230"
     volumes:
       - ./data:/var/opt/memos
+    restart: always
 ```
 
 然后运行：
