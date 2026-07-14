@@ -73,10 +73,13 @@ func (d *DB) Vacuum(ctx context.Context) error {
 		return err
 	}
 
-	// Vacuum sqlite database file size after deleting resource.
-	if _, err := d.db.Exec("VACUUM"); err != nil {
-		return err
-	}
+	// Keep the logical orphan cleanup above, but do not run SQLite VACUUM in
+	// the request path. VACUUM requires exclusive database access and can fail
+	// while the web app is concurrently reading from the WAL database. At that
+	// point the requested deletion has already committed, so returning the
+	// compaction error makes the UI incorrectly report that deletion failed.
+	// Physical compaction, when needed, must be performed as offline
+	// maintenance instead of after every deletion.
 
 	return nil
 }

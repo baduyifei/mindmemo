@@ -147,8 +147,8 @@ type Metadata struct {
 
 func getDefaultMetadata() *Metadata {
 	return &Metadata{
-		Title:       "Memos",
-		Description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
+		Title:       "MindMemo",
+		Description: "A private, self-hosted home for capturing and revisiting your thoughts.",
 		ImageURL:    "/logo.webp",
 	}
 }
@@ -165,7 +165,7 @@ func (m *Metadata) String() string {
 		fmt.Sprintf(`<meta property="twitter:description" content="%s" />`, m.Description),
 		fmt.Sprintf(`<meta property="twitter:image" content="%s" />`, m.ImageURL),
 		`<meta name="twitter:card" content="summary" />`,
-		`<meta name="twitter:creator" content="memos" />`,
+		`<meta name="twitter:creator" content="MindMemo" />`,
 	}
 	return strings.Join(metadataList, "\n")
 }

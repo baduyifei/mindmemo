@@ -22,3 +22,13 @@ build
 bin/air
 
 dev-dist
+
+# Local MindMemo data and backups
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.tar
+*.tgz

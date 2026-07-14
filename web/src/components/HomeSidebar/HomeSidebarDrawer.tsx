@@ -4,7 +4,12 @@ import { useLocation } from "react-router-dom";
 import Icon from "../Icon";
 import HomeSidebar from "./HomeSidebar";
 
-const HomeSidebarDrawer = () => {
+interface Props {
+  selectedDate?: string;
+  onDateSelect: (date?: string) => void;
+}
+
+const HomeSidebarDrawer = (props: Props) => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -27,7 +32,7 @@ const HomeSidebarDrawer = () => {
       </IconButton>
       <Drawer anchor="right" size="sm" open={open} onClose={toggleDrawer(false)}>
         <div className="w-full h-full px-5 bg-zinc-100 dark:bg-zinc-900">
-          <HomeSidebar className="py-4" />
+          <HomeSidebar className="py-4" selectedDate={props.selectedDate} onDateSelect={props.onDateSelect} />
         </div>
       </Drawer>
     </>

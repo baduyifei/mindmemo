@@ -1,5 +1,5 @@
 {
-  "name": "memos",
+  "name": "mindmemo",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

@@ -24,6 +24,7 @@ const Home = () => {
   const user = useCurrentUser();
   const memoStore = useMemoStore();
   const memoList = useMemoList();
+  const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [isRequesting, setIsRequesting] = useState(true);
   const nextPageTokenRef = useRef<string | undefined>(undefined);
   const { tag: tagQuery, text: textQuery } = useFilterWithUrlParams();
@@ -36,7 +37,7 @@ const Home = () => {
     nextPageTokenRef.current = undefined;
     memoList.reset();
     fetchMemos();
-  }, [tagQuery, textQuery]);
+  }, [selectedDate, tagQuery, textQuery]);
 
   const fetchMemos = async () => {
     const filters = [`creator == "${user.name}"`, `row_status == "NORMAL"`, `order_by_pinned == true`];
@@ -49,6 +50,15 @@ const Home = () => {
     }
     if (contentSearch.length > 0) {
       filters.push(`content_search == [${contentSearch.join(", ")}]`);
+    }
+    if (selectedDate) {
+      const [year, month, day] = selectedDate.split("-").map(Number);
+      const startOfDay = new Date(year, month - 1, day);
+      const startOfNextDay = new Date(year, month - 1, day + 1);
+      filters.push(
+        `display_time_after == ${Math.floor(startOfDay.getTime() / 1000) - 1}`,
+        `display_time_before == ${Math.floor(startOfNextDay.getTime() / 1000)}`,
+      );
     }
     setIsRequesting(true);
     const data = await memoStore.fetchMemos({
@@ -72,7 +82,7 @@ const Home = () => {
     <section className="@container w-full max-w-5xl min-h-full flex flex-col justify-start items-center sm:pt-3 md:pt-6 pb-8">
       {!md && (
         <MobileHeader>
-          <HomeSidebarDrawer />
+          <HomeSidebarDrawer selectedDate={selectedDate} onDateSelect={setSelectedDate} />
         </MobileHeader>
       )}
       <div className={classNames("w-full flex flex-row justify-start items-start px-4 sm:px-6 gap-4")}>
@@ -106,7 +116,7 @@ const Home = () => {
         </div>
         {md && (
           <div className="sticky top-0 left-0 shrink-0 -mt-6 w-56 h-full">
-            <HomeSidebar className="py-6" />
+            <HomeSidebar className="py-6" selectedDate={selectedDate} onDateSelect={setSelectedDate} />
           </div>
         )}
       </div>

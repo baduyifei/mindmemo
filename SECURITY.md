@@ -1,7 +1,9 @@
-# Security Policy
+# MindMemo Security Policy
 
-## Reporting a bug
+## Reporting a vulnerability
 
-Report security bugs via GitHub [issues](https://github.com/usememos/memos/issues).
+Please report security vulnerabilities through a private
+[GitHub security advisory](https://github.com/baduyifei/mindmemo/security/advisories/new).
 
-For more information, please contact [usememos@gmail.com](usememos@gmail.com).
+For ordinary, non-sensitive bugs, use the public
+[MindMemo issue tracker](https://github.com/baduyifei/mindmemo/issues).

@@ -20,7 +20,7 @@ const UserBanner = (props: Props) => {
   const globalStore = useGlobalStore();
   const { systemStatus } = globalStore.state;
   const user = useCurrentUser();
-  const title = user ? user.nickname || user.username : systemStatus.customizedProfile.name || "memos";
+  const title = user ? user.nickname || user.username : systemStatus.customizedProfile.name || "MindMemo";
   const avatarUrl = user ? user.avatarUrl : "/full-logo.webp";
 
   const handleSignOut = async () => {
