@@ -174,7 +174,7 @@ func (upsert UpsertSystemSettingRequest) Validate() error {
 		}
 	case SystemSettingCustomizedProfileName:
 		customizedProfile := CustomizedProfile{
-			Name:        "Memos",
+			Name:        defaultServiceName,
 			LogoURL:     "",
 			Description: "",
 			Locale:      "en",

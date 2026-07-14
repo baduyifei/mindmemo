@@ -43,6 +43,14 @@ if ([string]::IsNullOrWhiteSpace($repoRoot)) {
 Write-Host "Repository root: " -NoNewline
 Write-Host $repoRoot -f Blue
 
+$mindMemoVersion = (Get-Content (Join-Path $repoRoot "VERSION") -Raw).Trim()
+if ([string]::IsNullOrWhiteSpace($mindMemoVersion)) {
+    Write-Host -BackgroundColor red -ForegroundColor white "VERSION is empty."
+    Exit 1
+}
+$ldFlags += "-X github.com/usememos/memos/server/version.Version=$mindMemoVersion"
+$ldFlags += "-X github.com/usememos/memos/server/version.DevVersion=$mindMemoVersion"
+
 Push-Location
 Set-Location "$repoRoot/web"
 

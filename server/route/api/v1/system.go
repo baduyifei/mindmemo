@@ -10,6 +10,11 @@ import (
 	"github.com/usememos/memos/store"
 )
 
+const (
+	defaultServiceName = "MindMemo"
+	legacyServiceName  = "Memos"
+)
+
 type SystemStatus struct {
 	Host    *User           `json:"host"`
 	Profile profile.Profile `json:"profile"`
@@ -68,7 +73,7 @@ func (s *APIV1Service) GetSystemStatus(c echo.Context) error {
 		},
 		MaxUploadSizeMiB: 32,
 		CustomizedProfile: CustomizedProfile{
-			Name:       "Memos",
+			Name:       defaultServiceName,
 			Locale:     "en",
 			Appearance: "system",
 		},
@@ -129,6 +134,9 @@ func (s *APIV1Service) GetSystemStatus(c echo.Context) error {
 		default:
 			// Skip unknown system setting.
 		}
+	}
+	if systemStatus.CustomizedProfile.Name == legacyServiceName {
+		systemStatus.CustomizedProfile.Name = defaultServiceName
 	}
 
 	return c.JSON(http.StatusOK, systemStatus)

@@ -12,3 +12,6 @@ export const TAB_SPACE_WIDTH = 2;
 
 // DEFAULT_LIST_MEMOS_PAGE_SIZE is the default page size for list memos request.
 export const DEFAULT_LIST_MEMOS_PAGE_SIZE = 16;
+
+// DEFAULT_SERVICE_NAME is the product name shown when no custom service name is configured.
+export const DEFAULT_SERVICE_NAME = "MindMemo";

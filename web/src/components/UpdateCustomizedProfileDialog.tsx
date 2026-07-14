@@ -3,6 +3,7 @@ import Textarea from "@mui/joy/Textarea/Textarea";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import * as api from "@/helpers/api";
+import { DEFAULT_SERVICE_NAME } from "@/helpers/consts";
 import { useGlobalStore } from "@/store/module";
 import { useTranslate } from "@/utils/i18n";
 import AppearanceSelect from "./AppearanceSelect";
@@ -62,7 +63,7 @@ const UpdateCustomizedProfileDialog: React.FC<Props> = ({ destroy }: Props) => {
 
   const handleRestoreButtonClick = () => {
     setPartialState({
-      name: "Memos",
+      name: DEFAULT_SERVICE_NAME,
       logoUrl: "/logo.webp",
       description: "",
       locale: "en",

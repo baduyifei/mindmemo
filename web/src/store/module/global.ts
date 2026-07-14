@@ -1,5 +1,6 @@
 import { workspaceServiceClient } from "@/grpcweb";
 import * as api from "@/helpers/api";
+import { DEFAULT_SERVICE_NAME } from "@/helpers/consts";
 import storage from "@/helpers/storage";
 import i18n from "@/i18n";
 import { WorkspaceProfile } from "@/types/proto/api/v2/workspace_service";
@@ -17,7 +18,7 @@ export const initialGlobalState = async () => {
       maxUploadSizeMiB: 0,
       memoDisplayWithUpdatedTs: false,
       customizedProfile: {
-        name: "Memos",
+        name: DEFAULT_SERVICE_NAME,
         logoUrl: "/logo.webp",
         description: "",
         locale: "en",
@@ -38,7 +39,7 @@ export const initialGlobalState = async () => {
     defaultGlobalState.systemStatus = {
       ...data,
       customizedProfile: {
-        name: customizedProfile.name || "Memos",
+        name: customizedProfile.name || DEFAULT_SERVICE_NAME,
         logoUrl: customizedProfile.logoUrl || "/logo.webp",
         description: customizedProfile.description,
         locale: customizedProfile.locale || "en",

@@ -53,6 +53,16 @@ else
     echo -e "Repository root: \033[0;34m$repo_root\033[0m"
 fi
 
+mindmemo_version=$(tr -d '\r\n' < "$repo_root/VERSION")
+if [ -z "$mindmemo_version" ]; then
+    echo -e "\033[0;31mVERSION is empty! Exiting.\033[0m"
+    exit 1
+fi
+ldFlags+=(
+    "-X github.com/usememos/memos/server/version.Version=$mindmemo_version"
+    "-X github.com/usememos/memos/server/version.DevVersion=$mindmemo_version"
+)
+
 pushd $repo_root
 cd "$repo_root/web"
 

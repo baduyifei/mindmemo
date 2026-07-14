@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { useState } from "react";
 import useWindowScroll from "react-use/lib/useWindowScroll";
+import { DEFAULT_SERVICE_NAME } from "@/helpers/consts";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { useGlobalStore } from "@/store/module";
 import NavigationDrawer from "./NavigationDrawer";
@@ -15,7 +15,6 @@ const MobileHeader = (props: Props) => {
   const { systemStatus } = globalStore.state;
   const { className, children } = props;
   const { sm } = useResponsiveWidth();
-  const [titleText] = useState("Memos");
   const { y: offsetTop } = useWindowScroll();
 
   return (
@@ -32,7 +31,7 @@ const MobileHeader = (props: Props) => {
           className="font-bold text-lg leading-10 mr-1 text-ellipsis shrink-0 cursor-pointer overflow-hidden text-gray-700 dark:text-gray-300"
           onDoubleClick={() => location.reload()}
         >
-          {systemStatus.customizedProfile.name || titleText}
+          {systemStatus.customizedProfile.name || DEFAULT_SERVICE_NAME}
         </span>
       </div>
       <div className="flex flex-row justify-end items-center">{children}</div>

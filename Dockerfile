@@ -16,7 +16,11 @@ WORKDIR /backend-build
 
 COPY . .
 
-RUN CGO_ENABLED=0 go build -o memos ./bin/memos/main.go
+RUN MINDMEMO_VERSION="$(tr -d '\r\n' < VERSION)" && \
+  test -n "$MINDMEMO_VERSION" && \
+  CGO_ENABLED=0 go build \
+  -ldflags="-X github.com/usememos/memos/server/version.Version=$MINDMEMO_VERSION -X github.com/usememos/memos/server/version.DevVersion=$MINDMEMO_VERSION" \
+  -o memos ./bin/memos/main.go
 
 # Make workspace with above generated files.
 FROM alpine:latest AS monolithic
@@ -25,7 +29,6 @@ WORKDIR /usr/local/memos
 LABEL org.opencontainers.image.title="MindMemo" \
   org.opencontainers.image.description="A private, self-hosted home for capturing and revisiting your thoughts." \
   org.opencontainers.image.source="https://github.com/baduyifei/mindmemo" \
-  org.opencontainers.image.version="0.1.0" \
   org.opencontainers.image.licenses="MIT"
 
 RUN apk add --no-cache tzdata

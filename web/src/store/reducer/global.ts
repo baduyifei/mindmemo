@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { DEFAULT_SERVICE_NAME } from "@/helpers/consts";
 import { WorkspaceProfile } from "@/types/proto/api/v2/workspace_service";
 
 interface State {
@@ -18,7 +19,7 @@ const globalSlice = createSlice({
       disablePublicMemos: false,
       memoDisplayWithUpdatedTs: false,
       customizedProfile: {
-        name: "Memos",
+        name: DEFAULT_SERVICE_NAME,
         logoUrl: "/logo.webp",
         description: "",
         locale: "en",

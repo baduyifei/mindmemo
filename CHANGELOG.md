@@ -24,5 +24,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 
 - 避免在删除请求中执行 SQLite 物理 `VACUUM`，修复并发读取时删除已经成功却被界面报告为失败的问题。
 - 新增并发读取场景的 SQLite 删除回归测试。
+- 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
+- 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
 [0.1.0]: https://github.com/baduyifei/mindmemo/releases/tag/v0.1.0

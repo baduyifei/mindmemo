@@ -135,6 +135,8 @@ docker build -t mindmemo:dev .
 
 MindMemo 使用独立于上游 Memos 的[语义化版本](https://semver.org/lang/zh-CN/)：
 
+仓库根目录的 [`VERSION`](VERSION) 是 MindMemo 版本号的唯一来源。Docker 和本地构建脚本会在编译时自动读取并注入该版本；发布新版本时只需先修改这个文件，不要在界面或后端源码中重复填写版本号。
+
 - `PATCH`：问题修复，例如 `v0.1.1`
 - `MINOR`：向后兼容的新功能，例如 `v0.2.0`
 - `MAJOR`：包含不兼容改动的大版本，例如 `v1.0.0`
