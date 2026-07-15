@@ -1,11 +1,13 @@
 import { Drawer, IconButton } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Icon from "./Icon";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import Navigation from "./Navigation";
+import UserAvatar from "./UserAvatar";
 
 const NavigationDrawer = () => {
   const location = useLocation();
+  const currentUser = useCurrentUser();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -22,8 +24,8 @@ const NavigationDrawer = () => {
 
   return (
     <>
-      <IconButton onClick={toggleDrawer(true)}>
-        <Icon.Menu className="w-5 h-auto dark:text-gray-400" />
+      <IconButton aria-label="Open navigation" onClick={toggleDrawer(true)}>
+        <UserAvatar className="!w-8 !h-8 !rounded-full shrink-0" avatarUrl={currentUser?.avatarUrl} />
       </IconButton>
       <Drawer anchor="left" size="sm" open={open} onClose={toggleDrawer(false)}>
         <div className="w-full h-full overflow-auto px-4 bg-zinc-100 dark:bg-zinc-900">
