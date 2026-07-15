@@ -9,6 +9,7 @@
 - 在“设置 → 系统 → 编辑”中新增独立的网页 Icon 上传与预览功能。
 - 上传 PNG、JPG 或 WebP 后，自动居中裁剪并生成 256 × 256 的圆形透明 PNG。
 - 保存后立即更新浏览器标签页和 Apple Touch Icon，并在刷新及 Docker 重启后保留。
+- 新增 GitHub Actions 容器发布流程，自动构建 `linux/amd64` 与 `linux/arm64` 镜像并同步发布到 GHCR 和 Docker Hub。
 
 ## [1.0.0] - 2026-07-15
 

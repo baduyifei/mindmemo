@@ -1,6 +1,7 @@
 # MindMemo
 
 [![Version](https://img.shields.io/badge/version-v1.1.0-2563eb)](https://github.com/baduyifei/mindmemo/releases)
+[![Container Images](https://github.com/baduyifei/mindmemo/actions/workflows/publish-container.yml/badge.svg)](https://github.com/baduyifei/mindmemo/actions/workflows/publish-container.yml)
 [![Upstream](https://img.shields.io/badge/upstream-Memos%20v0.21.0-52525b)](https://github.com/usememos/memos/tree/v0.21.0)
 [![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
 
@@ -26,17 +27,28 @@ MindMemo 是一个面向个人知识记录的轻量、自托管备忘录应用�
 - 统计信息中的 `Days` 按实际有备忘录的日期计数。
 - 修复并发读取数据库时删除备忘录可能误报失败的问题；物理压缩改为离线维护。
 
-## 快速开始（macOS + Docker Desktop）
+## 官方 Docker 镜像
 
-### 1. 克隆并构建镜像
+GitHub Actions 会为 `linux/amd64` 和 `linux/arm64` 自动构建同一版本的镜像，并同时发布到：
+
+- GitHub Container Registry：`ghcr.io/baduyifei/mindmemo`
+- Docker Hub：`baduyifei/mindmemo`
+
+两个仓库中的镜像内容和版本标签保持一致。推荐在生产部署中使用明确的版本标签，例如 `1.1.0`；`latest` 始终对应 `main` 分支最近一次成功构建。
+
+任选一个镜像仓库拉取即可：
 
 ```bash
-git clone https://github.com/baduyifei/mindmemo.git
-cd mindmemo
-docker build -t mindmemo:1.1.0 .
+# GitHub Container Registry
+docker pull ghcr.io/baduyifei/mindmemo:1.1.0
+
+# 或 Docker Hub
+docker pull baduyifei/mindmemo:1.1.0
 ```
 
-### 2. 创建数据目录并启动
+## 快速开始（macOS + Docker Desktop）
+
+### 1. 创建数据目录并启动
 
 ```bash
 mkdir -p "$HOME/.mindmemo"
@@ -46,12 +58,14 @@ docker run -d \
   --restart unless-stopped \
   -p 52301:5230 \
   -v "$HOME/.mindmemo:/var/opt/memos" \
-  mindmemo:1.1.0
+  ghcr.io/baduyifei/mindmemo:1.1.0
 ```
 
 浏览器打开：<http://localhost:52301/>
 
-### 3. 常用管理命令
+如需使用 Docker Hub，将最后一行镜像名称替换为 `baduyifei/mindmemo:1.1.0`。
+
+### 2. 常用管理命令
 
 ```bash
 # 查看运行状态
@@ -72,7 +86,7 @@ docker start mindmemo
 ```yaml
 services:
   mindmemo:
-    image: mindmemo:1.1.0
+    image: ghcr.io/baduyifei/mindmemo:1.1.0
     container_name: mindmemo
     environment:
       - TZ=Asia/Shanghai
@@ -90,6 +104,8 @@ docker compose up -d
 ```
 
 `./data` 是本机数据目录，容器内的 `/var/opt/memos` 是 Memos v0.21.0 的兼容数据目录。不要把真实数据库、附件或备份提交到 Git 仓库。
+
+如需使用 Docker Hub，将 `image` 改为 `baduyifei/mindmemo:1.1.0`。
 
 ## 数据备份
 
@@ -131,6 +147,14 @@ go test ./...
 docker build -t mindmemo:dev .
 ```
 
+从源码自行构建时，镜像内显示的版本会自动读取仓库根目录的 [`VERSION`](VERSION)：
+
+```bash
+git clone https://github.com/baduyifei/mindmemo.git
+cd mindmemo
+docker build -t mindmemo:local .
+```
+
 ## 版本迭代约定
 
 MindMemo 使用独立于上游 Memos 的[语义化版本](https://semver.org/lang/zh-CN/)：
@@ -147,7 +171,13 @@ MindMemo 使用独立于上游 Memos 的[语义化版本](https://semver.org/lan
 2. 新功能使用 `feature/功能名` 分支，修复使用 `fix/问题名` 分支。
 3. 合并前运行前端、后端和 Docker 构建验证。
 4. 在 [CHANGELOG.md](CHANGELOG.md) 中记录用户可感知的变化。
-5. 发布时创建 `vX.Y.Z` Git 标签，并使用同一版本号标记 Docker 镜像。
+5. 发布时创建与 `VERSION` 一致的 `vX.Y.Z` Git 标签；GitHub Actions 会校验版本并自动发布 Docker 镜像。
+
+容器发布工作流会在以下情况自动运行：
+
+- 推送到 `main`：发布 `latest`、`VERSION` 和 `sha-*` 标签。
+- 推送 `vX.Y.Z` 标签：发布语义化版本标签，并验证 Git 标签与 `VERSION` 一致。
+- 在 GitHub Actions 页面手动触发。
 
 ## 同步上游 Memos
 
