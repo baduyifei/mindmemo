@@ -1,5 +1,7 @@
-# Build frontend dist.
-FROM node:20-alpine AS frontend
+# Build frontend dist on the native runner platform. The generated assets are
+# architecture-independent, so emulating the target CPU only adds overhead and
+# can make dependency installation stall under QEMU.
+FROM --platform=$BUILDPLATFORM node:20-alpine AS frontend
 WORKDIR /frontend-build
 
 COPY . .
@@ -10,15 +12,19 @@ RUN corepack enable && corepack prepare pnpm@8.15.9 --activate && pnpm i --froze
 
 RUN pnpm build
 
-# Build backend exec file.
-FROM golang:1.22-alpine AS backend
+# Build the backend on the native runner platform and cross-compile the binary
+# for each requested image platform.
+FROM --platform=$BUILDPLATFORM golang:1.22-alpine AS backend
 WORKDIR /backend-build
+
+ARG TARGETOS
+ARG TARGETARCH
 
 COPY . .
 
 RUN MINDMEMO_VERSION="$(tr -d '\r\n' < VERSION)" && \
   test -n "$MINDMEMO_VERSION" && \
-  CGO_ENABLED=0 go build \
+  CGO_ENABLED=0 GOOS="$TARGETOS" GOARCH="$TARGETARCH" go build \
   -ldflags="-X github.com/usememos/memos/server/version.Version=$MINDMEMO_VERSION -X github.com/usememos/memos/server/version.DevVersion=$MINDMEMO_VERSION" \
   -o memos ./bin/memos/main.go
 
