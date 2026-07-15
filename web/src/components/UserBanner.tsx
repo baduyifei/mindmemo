@@ -1,6 +1,7 @@
 import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
 import classNames from "classnames";
 import { authServiceClient } from "@/grpcweb";
+import { DEFAULT_FULL_LOGO_URL } from "@/helpers/consts";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { Routes } from "@/router";
@@ -21,7 +22,7 @@ const UserBanner = (props: Props) => {
   const { systemStatus } = globalStore.state;
   const user = useCurrentUser();
   const title = user ? user.nickname || user.username : systemStatus.customizedProfile.name || "MindMemo";
-  const avatarUrl = user ? user.avatarUrl : "/full-logo.webp";
+  const avatarUrl = user ? user.avatarUrl : DEFAULT_FULL_LOGO_URL;
 
   const handleSignOut = async () => {
     await authServiceClient.signOut({});

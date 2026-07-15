@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { DEFAULT_FULL_LOGO_URL } from "@/helpers/consts";
 
 interface Props {
   avatarUrl?: string;
@@ -11,7 +12,7 @@ const UserAvatar = (props: Props) => {
     <div className={classNames(`w-8 h-8 overflow-clip rounded-xl`, className)}>
       <img
         className="w-full h-auto shadow min-w-full min-h-full object-cover dark:opacity-80"
-        src={avatarUrl || "/full-logo.webp"}
+        src={avatarUrl || DEFAULT_FULL_LOGO_URL}
         decoding="async"
         loading="lazy"
         alt=""

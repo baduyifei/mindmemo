@@ -2,6 +2,7 @@ import { useColorScheme } from "@mui/joy";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
+import { DEFAULT_LOGO_URL } from "./helpers/consts";
 import storage from "./helpers/storage";
 import { getSystemColorScheme } from "./helpers/utils";
 import useNavigateTo from "./hooks/useNavigateTo";
@@ -69,7 +70,7 @@ const App = () => {
   // Dynamic update metadata with customized profile.
   useEffect(() => {
     document.title = systemStatus.customizedProfile.name;
-    const faviconUrl = systemStatus.customizedProfile.faviconUrl || systemStatus.customizedProfile.logoUrl || "/logo.webp";
+    const faviconUrl = systemStatus.customizedProfile.faviconUrl || systemStatus.customizedProfile.logoUrl || DEFAULT_LOGO_URL;
     const faviconLink = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
     const appleTouchIconLink = document.querySelector("link[rel='apple-touch-icon']") as HTMLLinkElement;
     faviconLink.href = faviconUrl;

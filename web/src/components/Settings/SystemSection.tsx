@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { workspaceSettingServiceClient } from "@/grpcweb";
 import * as api from "@/helpers/api";
+import { DEFAULT_LOGO_URL } from "@/helpers/consts";
 import { useGlobalStore } from "@/store/module";
 import { WorkspaceSettingPrefix } from "@/store/v1";
 import { WorkspaceGeneralSetting } from "@/types/proto/api/v2/workspace_setting_service";
@@ -235,7 +236,7 @@ const SystemSection = () => {
         <div className="flex items-center gap-3 min-w-0">
           <img
             className="w-9 h-9 shrink-0 rounded-full object-contain border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm"
-            src={systemStatus.customizedProfile.faviconUrl || systemStatus.customizedProfile.logoUrl || "/logo.webp"}
+            src={systemStatus.customizedProfile.faviconUrl || systemStatus.customizedProfile.logoUrl || DEFAULT_LOGO_URL}
             alt=""
           />
           <div className="min-w-0">

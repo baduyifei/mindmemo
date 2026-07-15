@@ -3,7 +3,7 @@ import Textarea from "@mui/joy/Textarea/Textarea";
 import { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import * as api from "@/helpers/api";
-import { DEFAULT_SERVICE_NAME } from "@/helpers/consts";
+import { DEFAULT_LOGO_URL, DEFAULT_SERVICE_NAME } from "@/helpers/consts";
 import { createCircularFavicon } from "@/helpers/favicon";
 import { useGlobalStore } from "@/store/module";
 import { useTranslate } from "@/utils/i18n";
@@ -92,8 +92,8 @@ const UpdateCustomizedProfileDialog: React.FC<Props> = ({ destroy }: Props) => {
   const handleRestoreButtonClick = () => {
     setPartialState({
       name: DEFAULT_SERVICE_NAME,
-      logoUrl: "/logo.webp",
-      faviconUrl: "/logo.webp",
+      logoUrl: DEFAULT_LOGO_URL,
+      faviconUrl: DEFAULT_LOGO_URL,
       description: "",
       locale: "en",
       appearance: "system",
@@ -138,7 +138,7 @@ const UpdateCustomizedProfileDialog: React.FC<Props> = ({ destroy }: Props) => {
           <div className="w-16 h-16 shrink-0 rounded-full border border-gray-200 dark:border-zinc-600 bg-white dark:bg-zinc-900 shadow-sm flex items-center justify-center overflow-hidden">
             <img
               className="w-full h-full object-contain rounded-full"
-              src={state.faviconUrl || state.logoUrl || "/logo.webp"}
+              src={state.faviconUrl || state.logoUrl || DEFAULT_LOGO_URL}
               alt={t("setting.system-section.customize-server.favicon-preview")}
             />
           </div>

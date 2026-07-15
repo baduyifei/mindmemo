@@ -2,8 +2,8 @@
   "name": "MindMemo",
   "short_name": "MindMemo",
   "icons": [
-    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/android-chrome-192x192.png?v=80467ceba865", "sizes": "192x192", "type": "image/png" },
+    { "src": "/android-chrome-512x512.png?v=5b46d0f219f8", "sizes": "512x512", "type": "image/png" }
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",

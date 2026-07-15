@@ -149,7 +149,7 @@ func getDefaultMetadata() *Metadata {
 	return &Metadata{
 		Title:       "MindMemo",
 		Description: "A private, self-hosted home for capturing and revisiting your thoughts.",
-		ImageURL:    "/logo.webp",
+		ImageURL:    "/logo.webp?v=9558c4a540cc",
 	}
 }
 

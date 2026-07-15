@@ -74,7 +74,7 @@ func (s *APIV1Service) GetSystemStatus(c echo.Context) error {
 		MaxUploadSizeMiB: 32,
 		CustomizedProfile: CustomizedProfile{
 			Name:       defaultServiceName,
-			FaviconURL: "/logo.webp",
+			FaviconURL: "/logo.webp?v=9558c4a540cc",
 			Locale:     "en",
 			Appearance: "system",
 		},

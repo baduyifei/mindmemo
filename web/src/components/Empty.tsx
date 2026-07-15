@@ -1,9 +1,9 @@
-import Icon from "./Icon";
+import { DEFAULT_EMPTY_STATE_URL } from "@/helpers/consts";
 
 const Empty = () => {
   return (
     <div className="mx-auto">
-      <Icon.Bird strokeWidth={1} className="w-24 h-auto text-gray-500 dark:text-gray-400" />
+      <img src={DEFAULT_EMPTY_STATE_URL} className="w-24 h-24" alt="" />
     </div>
   );
 };
