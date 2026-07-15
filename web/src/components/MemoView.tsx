@@ -6,9 +6,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { extractMemoIdFromName, useUserStore } from "@/store/v1";
 import { MemoRelation_Type } from "@/types/proto/api/v2/memo_relation_service";
-import { Memo, Visibility } from "@/types/proto/api/v2/memo_service";
-import { useTranslate } from "@/utils/i18n";
-import { convertVisibilityToString } from "@/utils/memo";
+import { Memo } from "@/types/proto/api/v2/memo_service";
 import showChangeMemoCreatedTsDialog from "./ChangeMemoCreatedTsDialog";
 import Icon from "./Icon";
 import MemoActionMenu from "./MemoActionMenu";
@@ -16,23 +14,21 @@ import MemoContent from "./MemoContent";
 import MemoReactionistView from "./MemoReactionListView";
 import MemoRelationListView from "./MemoRelationListView";
 import MemoResourceListView from "./MemoResourceListView";
+import MemoVisibilityButton from "./MemoVisibilityButton";
 import showPreviewImageDialog from "./PreviewImageDialog";
 import ReactionSelector from "./ReactionSelector";
 import UserAvatar from "./UserAvatar";
-import VisibilityIcon from "./VisibilityIcon";
 
 interface Props {
   memo: Memo;
   compact?: boolean;
   showCreator?: boolean;
-  showVisibility?: boolean;
   showPinned?: boolean;
   className?: string;
 }
 
 const MemoView: React.FC<Props> = (props: Props) => {
   const { memo, className } = props;
-  const t = useTranslate();
   const location = useLocation();
   const navigateTo = useNavigateTo();
   const currentUser = useCurrentUser();
@@ -114,14 +110,12 @@ const MemoView: React.FC<Props> = (props: Props) => {
           )}
         </div>
         <div className="flex flex-row justify-end items-center select-none shrink-0 gap-2">
+          {props.showPinned && memo.pinned && (
+            <Tooltip title={"Pinned"} placement="top">
+              <Icon.Bookmark className="w-4 h-auto text-amber-500" />
+            </Tooltip>
+          )}
           <div className="w-auto invisible group-hover:visible flex flex-row justify-between items-center gap-2">
-            {props.showVisibility && memo.visibility !== Visibility.PRIVATE && (
-              <Tooltip title={t(`memo.visibility.${convertVisibilityToString(memo.visibility).toLowerCase()}` as any)} placement="top">
-                <span className="flex justify-center items-center hover:opacity-70">
-                  <VisibilityIcon visibility={memo.visibility} />
-                </span>
-              </Tooltip>
-            )}
             {currentUser && <ReactionSelector className="border-none w-auto h-auto" memo={memo} />}
           </div>
           {!isInMemoDetailPage && (
@@ -137,11 +131,7 @@ const MemoView: React.FC<Props> = (props: Props) => {
               {commentAmount > 0 && <span className="text-xs text-gray-500 dark:text-gray-400">{commentAmount}</span>}
             </Link>
           )}
-          {props.showPinned && memo.pinned && (
-            <Tooltip title={"Pinned"} placement="top">
-              <Icon.Bookmark className="w-4 h-auto text-amber-500" />
-            </Tooltip>
-          )}
+          <MemoVisibilityButton memo={memo} />
           {!readonly && <MemoActionMenu className="-ml-1" memo={memo} hiddenActions={props.showPinned ? [] : ["pin"]} />}
         </div>
       </div>

@@ -87,7 +87,6 @@ const MemoDetail = () => {
           memo={memo}
           compact={false}
           showCreator
-          showVisibility
           showPinned
         />
         <div className="pt-8 pb-16 w-full">

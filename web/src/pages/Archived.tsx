@@ -7,6 +7,7 @@ import Empty from "@/components/Empty";
 import Icon from "@/components/Icon";
 import MemoContent from "@/components/MemoContent";
 import MemoFilter from "@/components/MemoFilter";
+import MemoVisibilityButton from "@/components/MemoVisibilityButton";
 import MobileHeader from "@/components/MobileHeader";
 import SearchBar from "@/components/SearchBar";
 import { DEFAULT_LIST_MEMOS_PAGE_SIZE } from "@/helpers/consts";
@@ -109,6 +110,7 @@ const Archived = () => {
                   </div>
                 </div>
                 <div className="flex flex-row justify-end items-center gap-x-2">
+                  <MemoVisibilityButton memo={memo} />
                   <Tooltip title={t("common.restore")} placement="top">
                     <button onClick={() => handleRestoreMemoClick(memo)}>
                       <Icon.ArchiveRestore className="w-4 h-auto cursor-pointer text-gray-500 dark:text-gray-400" />

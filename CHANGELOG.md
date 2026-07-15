@@ -2,6 +2,18 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.3.0] - 2026-07-15
+
+### 新增
+
+- 所有备忘录卡片常驻显示可见性图标：公开备忘录显示地球，私有备忘录显示锁。
+- 当前登录用户可继续点击地球或锁图标，使用原有功能修改备忘录的公开或私有状态。
+- 已归档页面的备忘录同样显示对应的可见性图标。
+
+### 调整
+
+- 备忘录卡片右上角操作图标统一按“表情、评论、可见性、更多菜单”的顺序排列。
+
 ## [1.2.0] - 2026-07-15
 
 ### 新增
@@ -50,6 +62,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.3.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.3.0
 [1.2.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.2.0
 [1.1.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.1.0
 [1.0.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.0.0
