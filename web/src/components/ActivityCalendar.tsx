@@ -52,28 +52,39 @@ const ActivityCalendar = (props: Props) => {
         );
         const count = data[date] || 0;
         const isToday = new Date().toDateString() === new Date(date).toDateString();
-        const tooltipText = count ? `${count} memos in ${date}` : date;
-        return day ? (
-          <Tooltip className="shrink-0" key={`${date}-${index}`} title={tooltipText} placement="top" arrow>
+
+        if (!day) {
+          return (
             <div
+              key={`${date}-${index}`}
               className={classNames(
-                "w-4 h-4 text-[9px] rounded-md flex justify-center items-center border border-transparent",
+                "shrink-0 opacity-30 w-4 h-4 rounded-md flex justify-center items-center border border-transparent",
                 getCellAdditionalStyles(count, maxCount),
-                isToday && "border-gray-600 dark:!border-gray-500",
               )}
-              onClick={() => count && onClick && onClick(date)}
-            >
-              {day}
-            </div>
-          </Tooltip>
-        ) : (
+            ></div>
+          );
+        }
+
+        const dayCell = (
           <div
             key={`${date}-${index}`}
             className={classNames(
-              "shrink-0 opacity-30 w-4 h-4 rounded-md flex justify-center items-center border border-transparent",
+              "w-4 h-4 text-[9px] rounded-md flex justify-center items-center border border-transparent",
               getCellAdditionalStyles(count, maxCount),
+              isToday && "border-gray-600 dark:!border-gray-500",
             )}
-          ></div>
+            onClick={() => count && onClick && onClick(date)}
+          >
+            {day}
+          </div>
+        );
+
+        return count > 0 ? (
+          <Tooltip className="shrink-0" key={`${date}-${index}`} title={`${count} memos in ${date}`} placement="top" arrow>
+            {dayCell}
+          </Tooltip>
+        ) : (
+          dayCell
         );
       })}
     </div>

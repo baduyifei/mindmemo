@@ -1,7 +1,9 @@
 import { Tooltip } from "@mui/joy";
 import classNames from "classnames";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { buildMemoCalendarDays, formatMemoDateKey, getMemoActivityIntensityClass } from "@/helpers/memoCalendar";
 import Icon from "./Icon";
+import MemoYearCalendarDialog from "./MemoYearCalendarDialog";
 
 interface Props {
   stats: Record<string, number>;
@@ -10,61 +12,15 @@ interface Props {
   onDateSelect: (date?: string) => void;
 }
 
-interface CalendarDay {
-  date: Date;
-  dateKey: string;
-  isCurrentMonth: boolean;
-}
-
 const WEEKDAY_LABELS = ["一", "二", "三", "四", "五", "六", "日"];
-
-const formatDateKey = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-const getIntensityClass = (count: number) => {
-  if (count === 0) {
-    return "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700";
-  }
-  if (count === 1) {
-    return "bg-blue-100 text-zinc-700 hover:bg-blue-200 dark:bg-blue-950 dark:text-white dark:hover:bg-blue-900";
-  }
-  if (count <= 3) {
-    return "bg-blue-300 text-zinc-700 hover:bg-blue-400 dark:bg-blue-800 dark:text-white dark:hover:bg-blue-700";
-  }
-  if (count <= 6) {
-    return "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500";
-  }
-  return "bg-blue-700 text-white hover:bg-blue-800 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-400";
-};
-
-const buildCalendarDays = (visibleMonth: Date): CalendarDay[] => {
-  const year = visibleMonth.getFullYear();
-  const month = visibleMonth.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const mondayFirstOffset = (firstDay.getDay() + 6) % 7;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cellCount = Math.ceil((mondayFirstOffset + daysInMonth) / 7) * 7;
-
-  return Array.from({ length: cellCount }, (_, index) => {
-    const date = new Date(year, month, index - mondayFirstOffset + 1);
-    return {
-      date,
-      dateKey: formatDateKey(date),
-      isCurrentMonth: date.getMonth() === month,
-    };
-  });
-};
 
 const MemoCalendar = (props: Props) => {
   const { stats, selectedDate, isRequesting = false, onDateSelect } = props;
   const now = new Date();
-  const todayKey = formatDateKey(now);
+  const todayKey = formatMemoDateKey(now);
   const [visibleMonth, setVisibleMonth] = useState(() => new Date(now.getFullYear(), now.getMonth(), 1));
-  const days = useMemo(() => buildCalendarDays(visibleMonth), [visibleMonth]);
+  const [isYearCalendarOpen, setIsYearCalendarOpen] = useState(false);
+  const days = useMemo(() => buildMemoCalendarDays(visibleMonth), [visibleMonth]);
   const year = visibleMonth.getFullYear();
   const month = visibleMonth.getMonth() + 1;
 
@@ -79,6 +35,15 @@ const MemoCalendar = (props: Props) => {
     onDateSelect(selectedDate === dateKey ? undefined : dateKey);
   };
 
+  const closeYearCalendar = useCallback(() => setIsYearCalendarOpen(false), []);
+
+  const handleYearDateSelect = (dateKey: string) => {
+    const [selectedYear, selectedMonth] = dateKey.split("-").map(Number);
+    setVisibleMonth(new Date(selectedYear, selectedMonth - 1, 1));
+    handleDateSelect(dateKey);
+    closeYearCalendar();
+  };
+
   return (
     <section
       data-testid="memo-activity-calendar"
@@ -87,7 +52,16 @@ const MemoCalendar = (props: Props) => {
     >
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <h2 className="text-sm font-semibold tracking-tight text-zinc-800 dark:text-zinc-200">{`${year}年${month}月`}</h2>
+          <button
+            type="button"
+            data-testid="memo-year-calendar-trigger"
+            className="-ml-1 cursor-pointer rounded-md px-1 py-0.5 text-sm font-semibold tracking-tight text-zinc-800 transition-colors hover:bg-zinc-200 hover:text-zinc-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-white"
+            aria-label={`查看 ${year} 年度热力图`}
+            aria-haspopup="dialog"
+            onClick={() => setIsYearCalendarOpen(true)}
+          >
+            {`${year}年${month}月`}
+          </button>
           {isRequesting && <Icon.Loader className="h-3.5 w-3.5 animate-spin text-zinc-400" aria-label="正在载入统计" />}
         </div>
         <div className="flex items-center gap-0.5">
@@ -136,26 +110,32 @@ const MemoCalendar = (props: Props) => {
             );
           }
 
-          const tooltipText = count === 0 ? `${dateKey}：没有备忘录` : `${dateKey}：${count} 条备忘录`;
-          return (
-            <Tooltip key={dateKey} title={tooltipText} placement="top" arrow>
-              <button
-                type="button"
-                data-date={dateKey}
-                data-memo-count={count}
-                aria-label={`${dateKey}，${count} 条备忘录${isSelected ? "，已筛选" : ""}`}
-                aria-pressed={isSelected}
-                className={classNames(
-                  "flex aspect-square min-w-0 select-none items-center justify-center rounded-md border text-xs font-medium leading-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 dark:focus-visible:ring-offset-zinc-900",
-                  getIntensityClass(count),
-                  isToday ? "border-zinc-500 dark:border-zinc-400" : "border-transparent",
-                  isSelected && "ring-2 ring-blue-700 ring-offset-1 dark:ring-blue-300 dark:ring-offset-zinc-900",
-                )}
-                onClick={() => handleDateSelect(dateKey)}
-              >
-                {date.getDate()}
-              </button>
+          const dateButton = (
+            <button
+              key={dateKey}
+              type="button"
+              data-date={dateKey}
+              data-memo-count={count}
+              aria-label={`${dateKey}，${count} 条备忘录${isSelected ? "，已筛选" : ""}`}
+              aria-pressed={isSelected}
+              className={classNames(
+                "flex aspect-square min-w-0 select-none items-center justify-center rounded-md border text-xs font-medium leading-none transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 dark:focus-visible:ring-offset-zinc-900",
+                getMemoActivityIntensityClass(count),
+                isToday ? "border-zinc-500 dark:border-zinc-400" : "border-transparent",
+                isSelected && "ring-2 ring-blue-700 ring-offset-1 dark:ring-blue-300 dark:ring-offset-zinc-900",
+              )}
+              onClick={() => handleDateSelect(dateKey)}
+            >
+              {date.getDate()}
+            </button>
+          );
+
+          return count > 0 ? (
+            <Tooltip key={dateKey} title={`${dateKey}：${count} 条备忘录`} placement="top" arrow>
+              {dateButton}
             </Tooltip>
+          ) : (
+            dateButton
           );
         })}
       </div>
@@ -174,6 +154,15 @@ const MemoCalendar = (props: Props) => {
             清除
           </button>
         </div>
+      )}
+      {isYearCalendarOpen && (
+        <MemoYearCalendarDialog
+          initialYear={year}
+          stats={stats}
+          selectedDate={selectedDate}
+          onClose={closeYearCalendar}
+          onDateSelect={handleYearDateSelect}
+        />
       )}
     </section>
   );
