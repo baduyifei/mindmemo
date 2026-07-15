@@ -31,6 +31,7 @@ const Tag: React.FC<Props> = ({ content }: Props) => {
         context.disableFilter ? "" : "cursor-pointer hover:opacity-80",
       )}
       onClick={handleTagClick}
+      data-memo-double-click-ignore
     >
       #{content}
     </span>

@@ -2,6 +2,19 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.4.0] - 2026-07-15
+
+### 新增
+
+- 桌面端可使用鼠标左键双击备忘录卡片的普通区域或文字内容，直接打开原有备忘录编辑器。
+- 双击编辑统一应用于主页、时间线、个人资料、探索、搜索结果、归档及备忘录详情等所有使用备忘录卡片的页面。
+
+### 交互保护
+
+- 图片、超链接、标签、评论、表情、可见性图标、更多菜单、引用备忘录和资源附件等交互区域不会触发双击编辑，并继续保留原有行为。
+- 仅当前登录用户自己创建的备忘录可通过双击进入编辑；其他用户的备忘录保持只读。
+- iPhone、iPad 等触摸设备不启用双击屏幕编辑，避免与移动端滚动、缩放及点击操作冲突。
+
 ## [1.3.0] - 2026-07-15
 
 ### 新增
@@ -62,6 +75,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.4.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.0
 [1.3.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.3.0
 [1.2.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.2.0
 [1.1.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.1.0

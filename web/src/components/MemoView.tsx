@@ -7,10 +7,12 @@ import useNavigateTo from "@/hooks/useNavigateTo";
 import { extractMemoIdFromName, useUserStore } from "@/store/v1";
 import { MemoRelation_Type } from "@/types/proto/api/v2/memo_relation_service";
 import { Memo } from "@/types/proto/api/v2/memo_service";
+import { shouldEditMemoOnDoubleClick } from "@/utils/memoDoubleClick";
 import showChangeMemoCreatedTsDialog from "./ChangeMemoCreatedTsDialog";
 import Icon from "./Icon";
 import MemoActionMenu from "./MemoActionMenu";
 import MemoContent from "./MemoContent";
+import showMemoEditorDialog from "./MemoEditor/MemoEditorDialog";
 import MemoReactionistView from "./MemoReactionListView";
 import MemoRelationListView from "./MemoRelationListView";
 import MemoResourceListView from "./MemoResourceListView";
@@ -71,6 +73,22 @@ const MemoView: React.FC<Props> = (props: Props) => {
     }
   }, []);
 
+  const handleMemoDoubleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (readonly || !shouldEditMemoOnDoubleClick(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      showMemoEditorDialog({
+        memoName: memo.name,
+        cacheKey: `${memo.name}-${memo.displayTime}`,
+      });
+    },
+    [memo.displayTime, memo.name, readonly],
+  );
+
   return (
     <div
       className={classNames(
@@ -79,6 +97,7 @@ const MemoView: React.FC<Props> = (props: Props) => {
         className,
       )}
       ref={memoContainerRef}
+      onDoubleClick={handleMemoDoubleClick}
     >
       <div className="w-full flex flex-row justify-between items-center gap-2">
         <div className="w-auto max-w-[calc(100%-8rem)] grow flex flex-row justify-start items-center">
@@ -98,18 +117,23 @@ const MemoView: React.FC<Props> = (props: Props) => {
                 <div
                   className="w-auto -mt-0.5 text-xs leading-tight text-gray-400 dark:text-gray-500 select-none"
                   onClick={handleGotoMemoDetailPage}
+                  data-memo-double-click-ignore
                 >
                   <relative-time datetime={memo.displayTime?.toISOString()} format={relativeTimeFormat} tense="past"></relative-time>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="w-full text-sm leading-tight text-gray-400 dark:text-gray-500 select-none" onClick={handleGotoMemoDetailPage}>
+            <div
+              className="w-full text-sm leading-tight text-gray-400 dark:text-gray-500 select-none"
+              onClick={handleGotoMemoDetailPage}
+              data-memo-double-click-ignore
+            >
               <relative-time datetime={memo.displayTime?.toISOString()} format={relativeTimeFormat} tense="past"></relative-time>
             </div>
           )}
         </div>
-        <div className="flex flex-row justify-end items-center select-none shrink-0 gap-2">
+        <div className="flex flex-row justify-end items-center select-none shrink-0 gap-2" data-memo-double-click-ignore>
           {props.showPinned && memo.pinned && (
             <Tooltip title={"Pinned"} placement="top">
               <Icon.Bookmark className="w-4 h-auto text-amber-500" />
@@ -143,9 +167,15 @@ const MemoView: React.FC<Props> = (props: Props) => {
         onClick={handleMemoContentClick}
         compact={props.compact ?? true}
       />
-      <MemoResourceListView resources={memo.resources} />
-      <MemoRelationListView memo={memo} relations={referencedMemos} />
-      <MemoReactionistView memo={memo} reactions={memo.reactions} />
+      <div className="contents" data-memo-double-click-ignore>
+        <MemoResourceListView resources={memo.resources} />
+      </div>
+      <div className="contents" data-memo-double-click-ignore>
+        <MemoRelationListView memo={memo} relations={referencedMemos} />
+      </div>
+      <div className="contents" data-memo-double-click-ignore>
+        <MemoReactionistView memo={memo} reactions={memo.reactions} />
+      </div>
     </div>
   );
 };

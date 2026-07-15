@@ -6,6 +6,7 @@ import { showCommonDialog } from "@/components/Dialog/CommonDialog";
 import Empty from "@/components/Empty";
 import Icon from "@/components/Icon";
 import MemoContent from "@/components/MemoContent";
+import showMemoEditorDialog from "@/components/MemoEditor/MemoEditorDialog";
 import MemoFilter from "@/components/MemoFilter";
 import MemoVisibilityButton from "@/components/MemoVisibilityButton";
 import MobileHeader from "@/components/MobileHeader";
@@ -18,6 +19,7 @@ import { useMemoList, useMemoStore } from "@/store/v1";
 import { RowStatus } from "@/types/proto/api/v2/common";
 import { Memo } from "@/types/proto/api/v2/memo_service";
 import { useTranslate } from "@/utils/i18n";
+import { shouldEditMemoOnDoubleClick } from "@/utils/memoDoubleClick";
 
 const Archived = () => {
   const t = useTranslate();
@@ -87,6 +89,19 @@ const Archived = () => {
     }
   };
 
+  const handleMemoDoubleClick = (event: React.MouseEvent<HTMLDivElement>, memo: Memo) => {
+    if (memo.creator !== user.name || !shouldEditMemoOnDoubleClick(event)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    showMemoEditorDialog({
+      memoName: memo.name,
+      cacheKey: `${memo.name}-${memo.displayTime}`,
+    });
+  };
+
   return (
     <section className="@container w-full max-w-5xl min-h-full flex flex-col justify-start items-center sm:pt-3 md:pt-6 pb-8">
       <MobileHeader />
@@ -102,14 +117,15 @@ const Archived = () => {
             <div
               key={memo.name}
               className="relative flex flex-col justify-start items-start w-full p-4 pt-3 mb-2 bg-white dark:bg-zinc-800 rounded-lg"
+              onDoubleClick={(event) => handleMemoDoubleClick(event, memo)}
             >
               <div className="w-full mb-1 flex flex-row justify-between items-center">
                 <div className="w-full max-w-[calc(100%-20px)] flex flex-row justify-start items-center mr-1">
-                  <div className="text-sm leading-6 text-gray-400 select-none">
+                  <div className="text-sm leading-6 text-gray-400 select-none" data-memo-double-click-ignore>
                     <relative-time datetime={memo.displayTime?.toISOString()} tense="past"></relative-time>
                   </div>
                 </div>
-                <div className="flex flex-row justify-end items-center gap-x-2">
+                <div className="flex flex-row justify-end items-center gap-x-2" data-memo-double-click-ignore>
                   <MemoVisibilityButton memo={memo} />
                   <Tooltip title={t("common.restore")} placement="top">
                     <button onClick={() => handleRestoreMemoClick(memo)}>

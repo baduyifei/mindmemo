@@ -40,7 +40,7 @@ const EmbeddedMemo = ({ resourceId, params: paramsStr }: Props) => {
   const inlineMode = params.has("inline");
   if (inlineMode) {
     return (
-      <div className="w-full">
+      <div className="w-full" data-memo-double-click-ignore>
         <MemoContent
           key={`${memo.name}-${memo.updateTime}`}
           memoName={memo.name}
@@ -53,7 +53,10 @@ const EmbeddedMemo = ({ resourceId, params: paramsStr }: Props) => {
   }
 
   return (
-    <div className="relative flex flex-col justify-start items-start w-full px-3 py-2 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 hover:shadow">
+    <div
+      className="relative flex flex-col justify-start items-start w-full px-3 py-2 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 hover:shadow"
+      data-memo-double-click-ignore
+    >
       <div className="w-full mb-1 flex flex-row justify-between items-center">
         <div className="text-sm leading-6 text-gray-400 select-none">
           <relative-time datetime={memo.displayTime?.toISOString()} format="datetime" tense="past"></relative-time>

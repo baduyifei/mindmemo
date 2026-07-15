@@ -53,7 +53,7 @@ const EmbeddedResource = ({ resourceId, params: paramsStr }: Props) => {
   }
 
   return (
-    <div className={classNames("max-w-full", getAdditionalClassNameWithParams(params))}>
+    <div className={classNames("max-w-full", getAdditionalClassNameWithParams(params))} data-memo-double-click-ignore>
       <MemoResourceListView resources={[resource]} />
     </div>
   );
