@@ -312,7 +312,15 @@
       "customize-server": {
         "appearance": "服务器外观",
         "description": "描述",
-        "icon-url": "图标 URL",
+        "icon-url": "服务 Logo URL",
+        "favicon": "网页 Icon",
+        "favicon-preview": "网页 Icon 预览",
+        "favicon-hint": "支持 5 MB 以内的 PNG、JPG、WebP。上传后自动居中裁剪，并生成 256 × 256 的圆形透明 PNG。",
+        "upload-favicon": "上传 Icon",
+        "remove-favicon": "移除 Icon",
+        "favicon-type-error": "请选择 PNG、JPG 或 WebP 图片。",
+        "favicon-size-error": "图片大小不能超过 5 MB。",
+        "favicon-invalid-error": "无法处理这张图片，请更换文件后重试。",
         "locale": "服务器语言环境",
         "title": "自定义服务"
       },

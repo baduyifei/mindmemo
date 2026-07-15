@@ -1934,6 +1934,10 @@ const docTemplate = `{
                     "description": "Description is the server description.",
                     "type": "string"
                 },
+                "faviconUrl": {
+                    "description": "FaviconURL is the browser tab icon URL or data URL.",
+                    "type": "string"
+                },
                 "locale": {
                     "description": "Locale is the server default locale.",
                     "type": "string"
@@ -2552,6 +2556,10 @@ const docTemplate = `{
                 },
                 "description": {
                     "description": "Description is the server description.",
+                    "type": "string"
+                },
+                "faviconUrl": {
+                    "description": "FaviconURL is the browser tab icon URL or data URL.",
                     "type": "string"
                 },
                 "locale": {

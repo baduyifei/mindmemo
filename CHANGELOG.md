@@ -2,6 +2,14 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.0] - 2026-07-15
+
+### 新增
+
+- 在“设置 → 系统 → 编辑”中新增独立的网页 Icon 上传与预览功能。
+- 上传 PNG、JPG 或 WebP 后，自动居中裁剪并生成 256 × 256 的圆形透明 PNG。
+- 保存后立即更新浏览器标签页和 Apple Touch Icon，并在刷新及 Docker 重启后保留。
+
 ## [1.0.0] - 2026-07-15
 
 MindMemo 的首个版本，基于 Memos v0.21.0。
@@ -27,4 +35,5 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.1.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.1.0
 [1.0.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.0.0

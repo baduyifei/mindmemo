@@ -20,6 +20,7 @@ export const initialGlobalState = async () => {
       customizedProfile: {
         name: DEFAULT_SERVICE_NAME,
         logoUrl: "/logo.webp",
+        faviconUrl: "/logo.webp",
         description: "",
         locale: "en",
         appearance: "system",
@@ -41,6 +42,7 @@ export const initialGlobalState = async () => {
       customizedProfile: {
         name: customizedProfile.name || DEFAULT_SERVICE_NAME,
         logoUrl: customizedProfile.logoUrl || "/logo.webp",
+        faviconUrl: customizedProfile.faviconUrl || customizedProfile.logoUrl || "/logo.webp",
         description: customizedProfile.description,
         locale: customizedProfile.locale || "en",
         appearance: customizedProfile.appearance || "system",

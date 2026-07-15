@@ -312,7 +312,15 @@
       "customize-server": {
         "appearance": "伺服器外觀",
         "description": "描述",
-        "icon-url": "圖示網址",
+        "icon-url": "服務 Logo 網址",
+        "favicon": "網頁 Icon",
+        "favicon-preview": "網頁 Icon 預覽",
+        "favicon-hint": "支援 5 MB 以內的 PNG、JPG、WebP。上傳後會自動置中裁切，並產生 256 × 256 的圓形透明 PNG。",
+        "upload-favicon": "上傳 Icon",
+        "remove-favicon": "移除 Icon",
+        "favicon-type-error": "請選擇 PNG、JPG 或 WebP 圖片。",
+        "favicon-size-error": "圖片大小不能超過 5 MB。",
+        "favicon-invalid-error": "無法處理這張圖片，請更換檔案後重試。",
         "locale": "伺服器語言",
         "title": "自訂伺服器"
       },

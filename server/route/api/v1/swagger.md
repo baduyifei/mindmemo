@@ -1031,6 +1031,7 @@ Get GetImage from URL
 | ---- | ---- | ----------- | -------- |
 | appearance | string | Appearance is the server default appearance. | No |
 | description | string | Description is the server description. | No |
+| faviconUrl | string | FaviconURL is the browser tab icon URL or data URL. | No |
 | locale | string | Locale is the server default locale. | No |
 | logoUrl | string | LogoURL is the url of logo image. | No |
 | name | string | Name is the server name, default is `memos` | No |
@@ -1326,6 +1327,7 @@ Get GetImage from URL
 | ---- | ---- | ----------- | -------- |
 | appearance | string | Appearance is the server default appearance. | No |
 | description | string | Description is the server description. | No |
+| faviconUrl | string | FaviconURL is the browser tab icon URL or data URL. | No |
 | locale | string | Locale is the server default locale. | No |
 | logoUrl | string | LogoURL is the url of logo image. | No |
 | name | string | Name is the server name, default is `memos` | No |

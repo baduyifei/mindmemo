@@ -232,8 +232,18 @@ const SystemSection = () => {
     <div className="w-full flex flex-col gap-2 pt-2 pb-4">
       <p className="font-medium text-gray-700 dark:text-gray-500">{t("common.basic")}</p>
       <div className="w-full flex flex-row justify-between items-center">
-        <div>
-          {t("setting.system-section.server-name")}: <span className="font-mono font-bold">{systemStatus.customizedProfile.name}</span>
+        <div className="flex items-center gap-3 min-w-0">
+          <img
+            className="w-9 h-9 shrink-0 rounded-full object-contain border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm"
+            src={systemStatus.customizedProfile.faviconUrl || systemStatus.customizedProfile.logoUrl || "/logo.webp"}
+            alt=""
+          />
+          <div className="min-w-0">
+            <div>
+              {t("setting.system-section.server-name")}: <span className="font-mono font-bold">{systemStatus.customizedProfile.name}</span>
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{t("setting.system-section.customize-server.favicon")}</div>
+          </div>
         </div>
         <Button onClick={handleUpdateCustomizedProfileButtonClick}>{t("common.edit")}</Button>
       </div>

@@ -1,6 +1,7 @@
 interface CustomizedProfile {
   name: string;
   logoUrl: string;
+  faviconUrl: string;
   description: string;
   locale: Locale;
   appearance: Appearance;

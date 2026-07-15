@@ -1,12 +1,12 @@
 # MindMemo
 
-[![Version](https://img.shields.io/badge/version-v1.0.0-2563eb)](https://github.com/baduyifei/mindmemo/releases)
+[![Version](https://img.shields.io/badge/version-v1.1.0-2563eb)](https://github.com/baduyifei/mindmemo/releases)
 [![Upstream](https://img.shields.io/badge/upstream-Memos%20v0.21.0-52525b)](https://github.com/usememos/memos/tree/v0.21.0)
 [![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
 
 MindMemo 是一个面向个人知识记录的轻量、自托管备忘录应用。项目基于开源项目 [Memos](https://github.com/usememos/memos) v0.21.0，并针对个人使用场景增加了月历热力图、日期筛选和稳定性修复。
 
-> 当前 MindMemo 版本：`v1.0.0`<br>
+> 当前 MindMemo 版本：`v1.1.0`<br>
 > 上游基础版本：`Memos v0.21.0`
 
 ## MindMemo 的主要改动
@@ -33,7 +33,7 @@ MindMemo 是一个面向个人知识记录的轻量、自托管备忘录应用�
 ```bash
 git clone https://github.com/baduyifei/mindmemo.git
 cd mindmemo
-docker build -t mindmemo:1.0.0 .
+docker build -t mindmemo:1.1.0 .
 ```
 
 ### 2. 创建数据目录并启动
@@ -46,7 +46,7 @@ docker run -d \
   --restart unless-stopped \
   -p 52301:5230 \
   -v "$HOME/.mindmemo:/var/opt/memos" \
-  mindmemo:1.0.0
+  mindmemo:1.1.0
 ```
 
 浏览器打开：<http://localhost:52301/>
@@ -72,7 +72,7 @@ docker start mindmemo
 ```yaml
 services:
   mindmemo:
-    image: mindmemo:1.0.0
+    image: mindmemo:1.1.0
     container_name: mindmemo
     environment:
       - TZ=Asia/Shanghai

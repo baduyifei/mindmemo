@@ -42,6 +42,8 @@ type CustomizedProfile struct {
 	Name string `json:"name"`
 	// LogoURL is the url of logo image.
 	LogoURL string `json:"logoUrl"`
+	// FaviconURL is the browser tab icon URL or data URL.
+	FaviconURL string `json:"faviconUrl"`
 	// Description is the server description.
 	Description string `json:"description"`
 	// Locale is the server default locale.
@@ -176,12 +178,23 @@ func (upsert UpsertSystemSettingRequest) Validate() error {
 		customizedProfile := CustomizedProfile{
 			Name:        defaultServiceName,
 			LogoURL:     "",
+			FaviconURL:  "",
 			Description: "",
 			Locale:      "en",
 			Appearance:  "system",
 		}
 		if err := json.Unmarshal([]byte(upsert.Value), &customizedProfile); err != nil {
 			return errors.Errorf(systemSettingUnmarshalError, settingName)
+		}
+		if len(customizedProfile.FaviconURL) > 1<<20 {
+			return errors.New("favicon URL exceeds the 1 MiB limit")
+		}
+		if customizedProfile.FaviconURL != "" &&
+			!strings.HasPrefix(customizedProfile.FaviconURL, "/") &&
+			!strings.HasPrefix(customizedProfile.FaviconURL, "https://") &&
+			!strings.HasPrefix(customizedProfile.FaviconURL, "http://") &&
+			!strings.HasPrefix(customizedProfile.FaviconURL, "data:image/png;base64,") {
+			return errors.New("favicon URL must be a relative path, HTTP(S) URL, or PNG data URL")
 		}
 	case SystemSettingStorageServiceIDName:
 		// Note: 0 is the default value(database) for storage service ID.

@@ -21,6 +21,7 @@ const globalSlice = createSlice({
       customizedProfile: {
         name: DEFAULT_SERVICE_NAME,
         logoUrl: "/logo.webp",
+        faviconUrl: "/logo.webp",
         description: "",
         locale: "en",
         appearance: "system",

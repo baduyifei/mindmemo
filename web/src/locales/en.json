@@ -235,7 +235,15 @@
       "server-name": "Server Name",
       "customize-server": {
         "title": "Customize Server",
-        "icon-url": "Icon URL",
+        "icon-url": "Service logo URL",
+        "favicon": "Webpage icon",
+        "favicon-preview": "Webpage icon preview",
+        "favicon-hint": "Upload a PNG, JPG, or WebP image up to 5 MB. It will be center-cropped and converted into a 256 × 256 circular PNG.",
+        "upload-favicon": "Upload icon",
+        "remove-favicon": "Remove icon",
+        "favicon-type-error": "Please select a PNG, JPG, or WebP image.",
+        "favicon-size-error": "The image must be no larger than 5 MB.",
+        "favicon-invalid-error": "The image could not be processed. Please try another file.",
         "description": "Description",
         "locale": "Server Locale",
         "appearance": "Server Appearance"

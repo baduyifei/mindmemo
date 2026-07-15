@@ -69,8 +69,11 @@ const App = () => {
   // Dynamic update metadata with customized profile.
   useEffect(() => {
     document.title = systemStatus.customizedProfile.name;
-    const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-    link.href = systemStatus.customizedProfile.logoUrl || "/logo.webp";
+    const faviconUrl = systemStatus.customizedProfile.faviconUrl || systemStatus.customizedProfile.logoUrl || "/logo.webp";
+    const faviconLink = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    const appleTouchIconLink = document.querySelector("link[rel='apple-touch-icon']") as HTMLLinkElement;
+    faviconLink.href = faviconUrl;
+    appleTouchIconLink.href = faviconUrl;
   }, [systemStatus.customizedProfile]);
 
   useEffect(() => {
