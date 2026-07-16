@@ -2,6 +2,13 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.4.1] - 2026-07-16
+
+### 修复
+
+- 修复备忘录卡片顶部时间点击区域覆盖整行空白位置，导致双击空白区域时先跳转详情页、无法进入编辑器的问题。
+- 将详情页跳转范围收窄到时间文字本身，保留单击时间进入详情页的原有行为，并让其余普通区域继续支持双击编辑。
+
 ## [1.4.0] - 2026-07-15
 
 ### 新增
@@ -75,6 +82,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.4.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.0
 [1.3.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.3.0
 [1.2.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.2.0

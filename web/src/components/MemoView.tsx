@@ -125,7 +125,7 @@ const MemoView: React.FC<Props> = (props: Props) => {
             </div>
           ) : (
             <div
-              className="w-full text-sm leading-tight text-gray-400 dark:text-gray-500 select-none"
+              className="w-auto text-sm leading-tight text-gray-400 dark:text-gray-500 select-none"
               onClick={handleGotoMemoDetailPage}
               data-memo-double-click-ignore
             >
