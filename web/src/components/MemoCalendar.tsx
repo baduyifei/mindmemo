@@ -62,7 +62,9 @@ const MemoCalendar = (props: Props) => {
           >
             {`${year}年${month}月`}
           </button>
-          {isRequesting && <Icon.Loader className="h-3.5 w-3.5 animate-spin text-zinc-400" aria-label="正在载入统计" />}
+          <span className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center">
+            {isRequesting && <Icon.Loader className="h-3.5 w-3.5 animate-spin text-zinc-400" aria-label="正在载入统计" />}
+          </span>
         </div>
         <div className="flex items-center gap-0.5">
           <button

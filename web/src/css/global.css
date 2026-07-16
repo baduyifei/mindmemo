@@ -1,13 +1,25 @@
+html {
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable;
+  min-height: 100%;
+}
+
 body {
   @apply text-base w-full min-h-[100svh] bg-zinc-100 dark:bg-zinc-900;
+  min-height: 100%;
 }
 
 #root {
   @apply relative w-full min-h-full;
+  min-height: 100%;
+}
+
+.mindmemo-home-content {
+  overflow-anchor: none;
 }
 html.dark {
   color-scheme: dark;
-  scrollbar-color: hsla(0, 0%, 100%, .4) hsla(0, 0%, 100%, .029);
+  scrollbar-color: hsla(0, 0%, 100%, 0.4) hsla(0, 0%, 100%, 0.029);
 }
 html.light {
   color-scheme: light;

@@ -34,7 +34,7 @@ const HomeLayout = () => {
     <div className="w-full min-h-full">
       <div
         className={classNames(
-          "w-full transition-all mx-auto flex flex-row justify-center items-start",
+          "w-full transition-[padding-left] mx-auto flex flex-row justify-center items-start",
           collapsed ? "sm:pl-16" : "sm:pl-56",
         )}
       >

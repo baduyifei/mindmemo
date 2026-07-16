@@ -41,8 +41,6 @@ const Home = () => {
   useEffect(() => {
     const requestSequence = ++requestSequenceRef.current;
     nextPageTokenRef.current = undefined;
-    memoList.reset();
-    setListedMemoNames([]);
     fetchMemos(requestSequence);
   }, [selectedDate, tagQuery, textQuery, visibilityQuery]);
 
@@ -106,39 +104,43 @@ const Home = () => {
   };
 
   return (
-    <section className="@container w-full max-w-5xl min-h-full flex flex-col justify-start items-center sm:pt-3 md:pt-6 pb-8">
+    <section className="mindmemo-home-content @container w-full max-w-5xl min-h-[calc(100svh+1px)] flex flex-col justify-start items-center sm:pt-3 md:pt-6 pb-8">
       {!md && (
         <MobileHeader>
           <HomeSidebarDrawer selectedDate={selectedDate} onDateSelect={setSelectedDate} />
         </MobileHeader>
       )}
-      <div className={classNames("w-full flex flex-row justify-start items-start px-4 sm:px-6 gap-4")}>
-        <div className={classNames(md ? "w-[calc(100%-15rem)]" : "w-full")}>
+      <div className={classNames("w-full min-w-0 flex flex-row justify-start items-start px-4 sm:px-6 gap-4")}>
+        <div className={classNames("min-w-0", md ? "w-[calc(100%-15rem)]" : "w-full")}>
           <MemoEditor className="mb-2" cacheKey="home-memo-editor" onConfirm={handleMemoCreated} onEditPrevious={handleEditPrevious} />
           <div className="flex flex-col justify-start items-start w-full max-w-full">
-            <MemoFilter className="px-2 pb-2" />
-            {sortedMemos.map((memo) => (
-              <MemoView key={`${memo.name}-${memo.updateTime}`} memo={memo} showPinned />
-            ))}
-            {isRequesting ? (
+            <div className="min-h-9 w-full shrink-0">
+              <MemoFilter className="min-h-9 px-2" />
+            </div>
+            <div className="w-full min-w-0">
+              {sortedMemos.map((memo) => (
+                <MemoView key={`${memo.name}-${memo.updateTime}`} memo={memo} showPinned />
+              ))}
+            </div>
+            {isRequesting && sortedMemos.length === 0 && listedMemoNames.length === 0 ? (
               <div className="flex flex-row justify-center items-center w-full my-4 text-gray-400">
                 <Icon.Loader className="w-4 h-auto animate-spin mr-1" />
                 <p className="text-sm italic">{t("memo.fetching-data")}</p>
               </div>
-            ) : !nextPageTokenRef.current ? (
+            ) : !isRequesting && !nextPageTokenRef.current ? (
               sortedMemos.length === 0 && (
                 <div className="w-full mt-12 mb-8 flex flex-col justify-center items-center italic">
                   <Empty />
                   <p className="mt-2 text-gray-600 dark:text-gray-400">{t("message.no-data")}</p>
                 </div>
               )
-            ) : (
+            ) : nextPageTokenRef.current ? (
               <div className="w-full flex flex-row justify-center items-center my-4">
                 <Button variant="plain" endDecorator={<Icon.ArrowDown className="w-5 h-auto" />} onClick={() => fetchMemos()}>
                   {t("memo.fetch-more")}
                 </Button>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
         {md && (

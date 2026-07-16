@@ -25,21 +25,29 @@ const UserStatisticsView = (props: Props) => {
           <Icon.CalendarDays className="w-4 h-auto mr-1" />
           <span className="block text-base sm:text-sm">{t("common.days")}</span>
         </div>
-        {isRequesting ? <Icon.Loader className="animate-spin w-4 h-auto text-gray-400" /> : <span className="font-mono">{memoDays}</span>}
+        <span className="inline-flex min-w-5 justify-end">
+          {isRequesting ? <Icon.Loader className="animate-spin w-4 h-auto text-gray-400" /> : <span className="font-mono">{memoDays}</span>}
+        </span>
       </div>
       <div className="w-full flex justify-between items-center">
         <div className="w-full flex justify-start items-center">
           <Icon.Library className="w-4 h-auto mr-1" />
           <span className="block text-base sm:text-sm">{t("common.memos")}</span>
         </div>
-        {isRequesting ? <Icon.Loader className="animate-spin w-4 h-auto text-gray-400" /> : <span className="font-mono">{memoAmount}</span>}
+        <span className="inline-flex min-w-5 justify-end">
+          {isRequesting ? (
+            <Icon.Loader className="animate-spin w-4 h-auto text-gray-400" />
+          ) : (
+            <span className="font-mono">{memoAmount}</span>
+          )}
+        </span>
       </div>
       <div className="w-full flex justify-between items-center">
         <div className="w-full flex justify-start items-center">
           <Icon.Hash className="w-4 h-auto mr-1" />
           <span className="block text-base sm:text-sm">{t("common.tags")}</span>
         </div>
-        <span className="font-mono">{tags}</span>
+        <span className="inline-flex min-w-5 justify-end font-mono">{tags}</span>
       </div>
     </div>
   );

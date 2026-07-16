@@ -2,6 +2,14 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.5.1] - 2026-07-16
+
+### 修复
+
+- 修复切换“仅公开”或“仅私有”智能筛选时，中间内容栏和右侧栏因滚动条显隐、筛选条件行及加载状态变化而快速晃动的问题。
+- 固定根页面滚动槽和首页最小高度，关闭筛选结果更新时的浏览器滚动锚定，避免结果数量变化造成横向位移。
+- 为筛选条件、月历加载状态和统计数字预留稳定空间，并在筛选请求期间保留现有列表，减少垂直布局跳动。
+
 ## [1.5.0] - 2026-07-16
 
 ### 新增
@@ -95,6 +103,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.5.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.5.1
 [1.5.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.5.0
 [1.4.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.0
