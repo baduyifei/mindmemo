@@ -2,6 +2,19 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.5.0] - 2026-07-16
+
+### 新增
+
+- 在主页右侧“统计”与“标签”之间新增“智能筛选”，可快速切换为仅显示公开或仅显示私有备忘录。
+- “仅公开”和“仅私有”互斥；再次点击当前选项可取消筛选并恢复全部备忘录。
+- 智能筛选支持与日期、标签和搜索条件叠加，并在现有筛选条件区域显示当前可见性条件。
+
+### 修复
+
+- 隔离主页列表查询结果与关联、引用备忘录缓存，避免关联内容绕过公开或私有筛选后混入列表。
+- 防止快速切换筛选条件时较早的异步请求覆盖最新结果。
+
 ## [1.4.1] - 2026-07-16
 
 ### 修复
@@ -82,6 +95,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.5.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.5.0
 [1.4.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.1
 [1.4.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.0
 [1.3.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.3.0

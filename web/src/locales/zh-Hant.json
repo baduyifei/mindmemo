@@ -104,6 +104,15 @@
     "memo-comment": "{{user}} 對您的 {{memo}} 發表了評論。",
     "version-update": "新版本 {{version}} 現已推出！"
   },
+  "home": {
+    "smart-filter": {
+      "title": "智慧篩選",
+      "combine-hint": "可與其他條件疊加",
+      "public-only": "僅公開",
+      "private-only": "僅私人",
+      "click-again-to-clear": "再次點擊已選項可取消篩選並顯示全部"
+    }
+  },
   "memo": {
     "archived-at": "封存於",
     "archived-memos": "封存的 Memo",

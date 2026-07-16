@@ -14,6 +14,7 @@ import { getTimeStampByDate } from "@/helpers/datetime";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useFilterWithUrlParams from "@/hooks/useFilterWithUrlParams";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
+import { useFilterStore } from "@/store/module";
 import { useMemoList, useMemoStore } from "@/store/v1";
 import { RowStatus } from "@/types/proto/api/v2/common";
 import { useTranslate } from "@/utils/i18n";
@@ -25,21 +26,28 @@ const Home = () => {
   const memoStore = useMemoStore();
   const memoList = useMemoList();
   const [selectedDate, setSelectedDate] = useState<string | undefined>();
+  const [listedMemoNames, setListedMemoNames] = useState<string[]>([]);
   const [isRequesting, setIsRequesting] = useState(true);
   const nextPageTokenRef = useRef<string | undefined>(undefined);
+  const requestSequenceRef = useRef(0);
   const { tag: tagQuery, text: textQuery } = useFilterWithUrlParams();
+  const visibilityQuery = useFilterStore().state.visibility;
+  const listedMemoNameSet = new Set(listedMemoNames);
   const sortedMemos = memoList.value
-    .filter((memo) => memo.rowStatus === RowStatus.ACTIVE)
+    .filter((memo) => listedMemoNameSet.has(memo.name) && memo.rowStatus === RowStatus.ACTIVE)
     .sort((a, b) => getTimeStampByDate(b.displayTime) - getTimeStampByDate(a.displayTime))
     .sort((a, b) => Number(b.pinned) - Number(a.pinned));
 
   useEffect(() => {
+    const requestSequence = ++requestSequenceRef.current;
     nextPageTokenRef.current = undefined;
     memoList.reset();
-    fetchMemos();
-  }, [selectedDate, tagQuery, textQuery]);
+    setListedMemoNames([]);
+    fetchMemos(requestSequence);
+  }, [selectedDate, tagQuery, textQuery, visibilityQuery]);
 
-  const fetchMemos = async () => {
+  const fetchMemos = async (requestSequence = requestSequenceRef.current) => {
+    const pageToken = nextPageTokenRef.current;
     const filters = [`creator == "${user.name}"`, `row_status == "NORMAL"`, `order_by_pinned == true`];
     const contentSearch: string[] = [];
     if (tagQuery) {
@@ -50,6 +58,9 @@ const Home = () => {
     }
     if (contentSearch.length > 0) {
       filters.push(`content_search == [${contentSearch.join(", ")}]`);
+    }
+    if (visibilityQuery) {
+      filters.push(`visibilities == ["${visibilityQuery}"]`);
     }
     if (selectedDate) {
       const [year, month, day] = selectedDate.split("-").map(Number);
@@ -64,19 +75,35 @@ const Home = () => {
     const data = await memoStore.fetchMemos({
       pageSize: DEFAULT_LIST_MEMOS_PAGE_SIZE,
       filter: filters.join(" && "),
-      pageToken: nextPageTokenRef.current,
+      pageToken,
     });
+
+    if (requestSequence !== requestSequenceRef.current) {
+      return;
+    }
+
     setIsRequesting(false);
+    const fetchedMemoNames = data.memos.map((memo) => memo.name);
+    setListedMemoNames((currentMemoNames) =>
+      pageToken ? Array.from(new Set([...currentMemoNames, ...fetchedMemoNames])) : fetchedMemoNames,
+    );
     nextPageTokenRef.current = data.nextPageToken;
   };
 
   const handleEditPrevious = useCallback(() => {
-    const lastMemo = memoList.value[memoList.value.length - 1];
+    const lastMemo = sortedMemos[sortedMemos.length - 1];
+    if (!lastMemo) {
+      return;
+    }
     showMemoEditorDialog({
       memoName: lastMemo.name,
       cacheKey: `${lastMemo.name}-${lastMemo.displayTime}`,
     });
-  }, [memoList]);
+  }, [sortedMemos]);
+
+  const handleMemoCreated = (memoName: string) => {
+    setListedMemoNames((currentMemoNames) => (currentMemoNames.includes(memoName) ? currentMemoNames : [memoName, ...currentMemoNames]));
+  };
 
   return (
     <section className="@container w-full max-w-5xl min-h-full flex flex-col justify-start items-center sm:pt-3 md:pt-6 pb-8">
@@ -87,7 +114,7 @@ const Home = () => {
       )}
       <div className={classNames("w-full flex flex-row justify-start items-start px-4 sm:px-6 gap-4")}>
         <div className={classNames(md ? "w-[calc(100%-15rem)]" : "w-full")}>
-          <MemoEditor className="mb-2" cacheKey="home-memo-editor" onEditPrevious={handleEditPrevious} />
+          <MemoEditor className="mb-2" cacheKey="home-memo-editor" onConfirm={handleMemoCreated} onEditPrevious={handleEditPrevious} />
           <div className="flex flex-col justify-start items-start w-full max-w-full">
             <MemoFilter className="px-2 pb-2" />
             {sortedMemos.map((memo) => (
@@ -107,7 +134,7 @@ const Home = () => {
               )
             ) : (
               <div className="w-full flex flex-row justify-center items-center my-4">
-                <Button variant="plain" endDecorator={<Icon.ArrowDown className="w-5 h-auto" />} onClick={fetchMemos}>
+                <Button variant="plain" endDecorator={<Icon.ArrowDown className="w-5 h-auto" />} onClick={() => fetchMemos()}>
                   {t("memo.fetch-more")}
                 </Button>
               </div>

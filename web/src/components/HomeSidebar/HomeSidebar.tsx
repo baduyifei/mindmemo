@@ -6,6 +6,7 @@ import UserStatisticsView from "@/components/UserStatisticsView";
 import { memoServiceClient } from "@/grpcweb";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useMemoStore } from "@/store/v1";
+import SmartFilterSection from "./SmartFilterSection";
 import TagsSection from "./TagsSection";
 
 interface Props {
@@ -55,6 +56,7 @@ const HomeSidebar = (props: Props) => {
         onDateSelect={props.onDateSelect}
       />
       <UserStatisticsView stats={memoStats} isRequesting={isRequestingStats} />
+      <SmartFilterSection />
       <TagsSection />
     </aside>
   );

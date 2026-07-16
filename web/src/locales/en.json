@@ -70,6 +70,15 @@
     "go-to-home": "Go to Home",
     "back-to-top": "Back to Top"
   },
+  "home": {
+    "smart-filter": {
+      "title": "Smart filter",
+      "combine-hint": "Works with other filters",
+      "public-only": "Public only",
+      "private-only": "Private only",
+      "click-again-to-clear": "Click the selected option again to show all"
+    }
+  },
   "auth": {
     "create-your-account": "Create your account",
     "sign-up-tip": "Don't have an account yet?",

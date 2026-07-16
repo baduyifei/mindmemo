@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useFilterStore } from "@/store/module";
 import { useTranslate } from "@/utils/i18n";
+import { convertVisibilityToString } from "@/utils/memo";
 import Icon from "./Icon";
+import VisibilityIcon from "./VisibilityIcon";
 
 interface Props {
   className?: string;
@@ -57,7 +59,8 @@ const MemoFilter = (props: Props) => {
           filterStore.setMemoVisibilityFilter(undefined);
         }}
       >
-        <Icon.Eye className="w-4 h-auto mr-1 text-gray-500 dark:text-gray-400" /> {visibility}
+        {visibility && <VisibilityIcon visibility={visibility} />}
+        <span className="ml-1">{visibility && t(`memo.visibility.${convertVisibilityToString(visibility).toLowerCase()}` as any)}</span>
         <Icon.X className="w-4 h-auto ml-1 opacity-40" />
       </div>
       <div
