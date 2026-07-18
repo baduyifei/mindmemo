@@ -1,10 +1,8 @@
-import { Button, Tooltip } from "@mui/joy";
-import { ClientError } from "nice-grpc-web";
+import { Button } from "@mui/joy";
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { showCommonDialog } from "@/components/Dialog/CommonDialog";
 import Empty from "@/components/Empty";
 import Icon from "@/components/Icon";
+import MemoActionMenu from "@/components/MemoActionMenu";
 import MemoContent from "@/components/MemoContent";
 import showMemoEditorDialog from "@/components/MemoEditor/MemoEditorDialog";
 import MemoFilter from "@/components/MemoFilter";
@@ -61,34 +59,6 @@ const Archived = () => {
     nextPageTokenRef.current = data.nextPageToken;
   };
 
-  const handleDeleteMemoClick = async (memo: Memo) => {
-    showCommonDialog({
-      title: t("memo.delete-memo"),
-      content: t("memo.delete-confirm"),
-      style: "danger",
-      dialogName: "delete-memo-dialog",
-      onConfirm: async () => {
-        await memoStore.deleteMemo(memo.name);
-      },
-    });
-  };
-
-  const handleRestoreMemoClick = async (memo: Memo) => {
-    try {
-      await memoStore.updateMemo(
-        {
-          name: memo.name,
-          rowStatus: RowStatus.ACTIVE,
-        },
-        ["row_status"],
-      );
-      toast(t("message.restored-successfully"));
-    } catch (error: unknown) {
-      console.error(error);
-      toast.error((error as ClientError).details);
-    }
-  };
-
   const handleMemoDoubleClick = (event: React.MouseEvent<HTMLDivElement>, memo: Memo) => {
     if (memo.creator !== user.name || !shouldEditMemoOnDoubleClick(event)) {
       return;
@@ -127,16 +97,7 @@ const Archived = () => {
                 </div>
                 <div className="flex flex-row justify-end items-center gap-x-2" data-memo-double-click-ignore>
                   <MemoVisibilityButton memo={memo} />
-                  <Tooltip title={t("common.restore")} placement="top">
-                    <button onClick={() => handleRestoreMemoClick(memo)}>
-                      <Icon.ArchiveRestore className="w-4 h-auto cursor-pointer text-gray-500 dark:text-gray-400" />
-                    </button>
-                  </Tooltip>
-                  <Tooltip title={t("common.delete")} placement="top">
-                    <button onClick={() => handleDeleteMemoClick(memo)} className="text-gray-500 dark:text-gray-400">
-                      <Icon.Trash className="w-4 h-auto cursor-pointer" />
-                    </button>
-                  </Tooltip>
+                  <MemoActionMenu memo={memo} hiddenActions={["pin", "edit", "share"]} />
                 </div>
               </div>
               <MemoContent key={`${memo.name}-${memo.displayTime}`} memoName={memo.name} content={memo.content} readonly={true} />

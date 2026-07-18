@@ -15,6 +15,11 @@ interface Props {
   className?: string;
 }
 
+interface ReactionPickerProps {
+  memo: Memo;
+  onReactionSelect?: () => void;
+}
+
 const REACTION_TYPES = [
   Reaction_Type.THUMBS_UP,
   Reaction_Type.THUMBS_DOWN,
@@ -30,22 +35,19 @@ const REACTION_TYPES = [
   Reaction_Type.QUESTION_MARK,
 ];
 
-const ReactionSelector = (props: Props) => {
-  const { memo, className } = props;
+export const ReactionPicker = ({ memo, onReactionSelect }: ReactionPickerProps) => {
   const currentUser = useCurrentUser();
   const memoStore = useMemoStore();
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useClickAway(containerRef, () => {
-    setOpen(false);
-  });
 
   const hasReacted = (reactionType: Reaction_Type) => {
-    return memo.reactions.some((r) => r.reactionType === reactionType && r.creator === currentUser?.name);
+    return memo.reactions.some((reaction) => reaction.reactionType === reactionType && reaction.creator === currentUser?.name);
   };
 
   const handleReactionClick = async (reactionType: Reaction_Type) => {
+    if (!currentUser) {
+      return;
+    }
+
     try {
       if (hasReacted(reactionType)) {
         const reactions = memo.reactions.filter(
@@ -59,16 +61,45 @@ const ReactionSelector = (props: Props) => {
           name: memo.name,
           reaction: {
             contentId: memo.name,
-            reactionType: reactionType,
+            reactionType,
           },
         });
       }
       await memoStore.getOrFetchMemoByName(memo.name, { skipCache: true });
     } catch (error) {
-      // skip error.
+      // Keep the selector quiet when a reaction request fails.
+    } finally {
+      onReactionSelect?.();
     }
-    setOpen(false);
   };
+
+  return (
+    <div className="grid grid-cols-6 gap-1 px-2 py-1 font-mono">
+      {REACTION_TYPES.map((reactionType) => (
+        <button
+          key={reactionType}
+          type="button"
+          className={classNames(
+            "inline-flex min-h-8 min-w-8 cursor-pointer items-center justify-center rounded-md px-1 text-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-zinc-700 dark:hover:text-gray-200",
+            hasReacted(reactionType) && "bg-blue-100 text-blue-700 dark:bg-zinc-700 dark:text-blue-300",
+          )}
+          onClick={() => handleReactionClick(reactionType)}
+        >
+          {stringifyReactionType(reactionType)}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const ReactionSelector = (props: Props) => {
+  const { memo, className } = props;
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useClickAway(containerRef, () => {
+    setOpen(false);
+  });
 
   return (
     <Dropdown open={open} onOpenChange={(_, isOpen) => setOpen(isOpen)}>
@@ -84,22 +115,7 @@ const ReactionSelector = (props: Props) => {
       </MenuButton>
       <Menu className="relative text-sm" component="div" size="sm" placement="bottom-start">
         <div ref={containerRef}>
-          <div className="grid grid-cols-6 py-0.5 px-2 h-auto font-mono gap-1">
-            {REACTION_TYPES.map((reactionType) => {
-              return (
-                <span
-                  key={reactionType}
-                  className={classNames(
-                    "inline-flex w-auto cursor-pointer rounded text-lg px-1 text-gray-500 dark:text-gray-400 hover:opacity-80",
-                    hasReacted(reactionType) && "bg-blue-100 dark:bg-zinc-800",
-                  )}
-                  onClick={() => handleReactionClick(reactionType)}
-                >
-                  {stringifyReactionType(reactionType)}
-                </span>
-              );
-            })}
-          </div>
+          <ReactionPicker memo={memo} onReactionSelect={() => setOpen(false)} />
         </div>
       </Menu>
     </Dropdown>

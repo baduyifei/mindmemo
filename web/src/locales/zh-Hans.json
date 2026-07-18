@@ -114,6 +114,7 @@
     }
   },
   "memo": {
+    "add-reaction": "添加表情",
     "archived-at": "存档于",
     "archived-memos": "归档 Memo",
     "comment": {

@@ -114,6 +114,7 @@
     }
   },
   "memo": {
+    "add-reaction": "新增表情",
     "archived-at": "封存於",
     "archived-memos": "封存的 Memo",
     "comment": {

@@ -2,6 +2,15 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.6.0] - 2026-07-18
+
+### 调整
+
+- 备忘录卡片右上角不再因鼠标悬浮显示表情和评论按钮，始终只保留公开/私有状态与更多菜单，减少视觉干扰和布局变化。
+- 将“评论”和“添加表情”完整收纳到更多菜单中，继续保留评论数量提示、表情选择及原有交互功能。
+- 当前用户自己的备忘录菜单统一按“置顶、编辑、分享、评论、添加表情、归档、删除”排列；其他用户的备忘录仅提供允许使用的评论与表情功能。
+- 归档页面使用同一套更多菜单与权限规则，并保留恢复和删除操作。
+
 ## [1.5.1] - 2026-07-16
 
 ### 修复
@@ -103,6 +112,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.6.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.6.0
 [1.5.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.5.1
 [1.5.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.5.0
 [1.4.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.4.1

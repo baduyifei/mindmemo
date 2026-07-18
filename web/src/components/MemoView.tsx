@@ -1,7 +1,7 @@
 import { Tooltip } from "@mui/joy";
 import classNames from "classnames";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { extractMemoIdFromName, useUserStore } from "@/store/v1";
@@ -18,7 +18,6 @@ import MemoRelationListView from "./MemoRelationListView";
 import MemoResourceListView from "./MemoResourceListView";
 import MemoVisibilityButton from "./MemoVisibilityButton";
 import showPreviewImageDialog from "./PreviewImageDialog";
-import ReactionSelector from "./ReactionSelector";
 import UserAvatar from "./UserAvatar";
 
 interface Props {
@@ -31,7 +30,6 @@ interface Props {
 
 const MemoView: React.FC<Props> = (props: Props) => {
   const { memo, className } = props;
-  const location = useLocation();
   const navigateTo = useNavigateTo();
   const currentUser = useCurrentUser();
   const userStore = useUserStore();
@@ -39,12 +37,8 @@ const MemoView: React.FC<Props> = (props: Props) => {
   const [creator, setCreator] = useState(userStore.getUserByName(memo.creator));
   const memoContainerRef = useRef<HTMLDivElement>(null);
   const referencedMemos = memo.relations.filter((relation) => relation.type === MemoRelation_Type.REFERENCE);
-  const commentAmount = memo.relations.filter(
-    (relation) => relation.type === MemoRelation_Type.COMMENT && relation.relatedMemo === memo.name,
-  ).length;
   const relativeTimeFormat = Date.now() - memo.displayTime!.getTime() > 1000 * 60 * 60 * 24 ? "datetime" : "auto";
   const readonly = memo.creator !== user?.name;
-  const isInMemoDetailPage = location.pathname.startsWith(`/m/${memo.uid}`);
 
   // Initial related data: creator.
   useEffect(() => {
@@ -139,24 +133,8 @@ const MemoView: React.FC<Props> = (props: Props) => {
               <Icon.Bookmark className="w-4 h-auto text-amber-500" />
             </Tooltip>
           )}
-          <div className="w-auto invisible group-hover:visible flex flex-row justify-between items-center gap-2">
-            {currentUser && <ReactionSelector className="border-none w-auto h-auto" memo={memo} />}
-          </div>
-          {!isInMemoDetailPage && (
-            <Link
-              className={classNames(
-                "flex flex-row justify-start items-center hover:opacity-70",
-                commentAmount === 0 && "invisible group-hover:visible",
-              )}
-              to={`/m/${memo.uid}#comments`}
-              unstable_viewTransition
-            >
-              <Icon.MessageCircleMore className="w-4 h-4 mx-auto text-gray-500 dark:text-gray-400" />
-              {commentAmount > 0 && <span className="text-xs text-gray-500 dark:text-gray-400">{commentAmount}</span>}
-            </Link>
-          )}
           <MemoVisibilityButton memo={memo} />
-          {!readonly && <MemoActionMenu className="-ml-1" memo={memo} hiddenActions={props.showPinned ? [] : ["pin"]} />}
+          {currentUser && <MemoActionMenu className="-ml-1" memo={memo} hiddenActions={props.showPinned ? [] : ["pin"]} />}
         </div>
       </div>
       <MemoContent
