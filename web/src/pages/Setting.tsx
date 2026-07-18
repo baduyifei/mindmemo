@@ -10,7 +10,10 @@ import SSOSection from "@/components/Settings/SSOSection";
 import SectionMenuItem from "@/components/Settings/SectionMenuItem";
 import StorageSection from "@/components/Settings/StorageSection";
 import SystemSection from "@/components/Settings/SystemSection";
+import { authServiceClient } from "@/grpcweb";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import useNavigateTo from "@/hooks/useNavigateTo";
+import { Routes } from "@/router";
 import { useGlobalStore } from "@/store/module";
 import { User_Role } from "@/types/proto/api/v2/user_service";
 import { useTranslate } from "@/utils/i18n";
@@ -33,10 +36,31 @@ const SECTION_ICON_MAP: Record<SettingSection, LucideIcon> = {
   sso: Icon.Key,
 };
 
+interface SettingsActionItemProps {
+  text: string;
+  icon: LucideIcon;
+  disabled?: boolean;
+  onClick: () => void;
+}
+
+const SettingsActionItem = ({ text, icon: IconComponent, disabled, onClick }: SettingsActionItemProps) => (
+  <button
+    type="button"
+    disabled={disabled}
+    onClick={onClick}
+    className="w-full px-3 leading-8 flex flex-row justify-start items-center cursor-pointer rounded-lg select-none transition-colors disabled:cursor-wait disabled:opacity-50 text-gray-600 hover:bg-zinc-100 dark:text-gray-400 dark:hover:bg-zinc-900"
+  >
+    <IconComponent className="w-4 h-auto mr-2 opacity-80 shrink-0" />
+    <span className="truncate">{text}</span>
+  </button>
+);
+
 const Setting = () => {
   const t = useTranslate();
   const user = useCurrentUser();
+  const navigateTo = useNavigateTo();
   const globalStore = useGlobalStore();
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const [state, setState] = useState<State>({
     selectedSection: "my-account",
   });
@@ -56,6 +80,26 @@ const Setting = () => {
       selectedSection: settingSection,
     });
   }, []);
+
+  const handleSignOut = useCallback(async () => {
+    setIsSigningOut(true);
+    try {
+      await authServiceClient.signOut({});
+      window.location.href = Routes.AUTH;
+    } finally {
+      setIsSigningOut(false);
+    }
+  }, []);
+
+  const settingsFooter = (
+    <>
+      <SettingsActionItem text={t("common.about")} icon={Icon.Smile} onClick={() => navigateTo(Routes.ABOUT)} />
+      <SettingsActionItem text={t("common.sign-out")} icon={Icon.LogOut} disabled={isSigningOut} onClick={handleSignOut} />
+      {isHost ? (
+        <span className="block w-full px-3 mt-2 opacity-70 text-sm">Version: v{globalStore.state.workspaceProfile.version}</span>
+      ) : null}
+    </>
+  );
 
   return (
     <section className="@container w-full max-w-5xl min-h-full flex flex-col justify-start items-start sm:pt-3 md:pt-6 pb-8">
@@ -88,10 +132,10 @@ const Setting = () => {
                       onClick={() => handleSectionSelectorItemClick(item)}
                     />
                   ))}
-                  <span className="px-3 mt-2 opacity-70 text-sm">Version: v{globalStore.state.workspaceProfile.version}</span>
                 </div>
               </>
             ) : null}
+            <div className="w-full">{settingsFooter}</div>
           </div>
           <div className="w-full grow sm:pl-4 overflow-x-auto">
             <div className="w-auto inline-block my-2 sm:hidden">
@@ -116,6 +160,7 @@ const Setting = () => {
             ) : state.selectedSection === "sso" ? (
               <SSOSection />
             ) : null}
+            <div className="sm:hidden w-full">{settingsFooter}</div>
           </div>
         </div>
       </div>

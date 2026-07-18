@@ -2,6 +2,18 @@
 
 本文档记录 MindMemo 各版本中用户可感知的主要变化。版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.7.0] - 2026-07-18
+
+### 新增
+
+- 已登录用户点击左侧边栏的头像和昵称区域时，直接返回主页，不再弹出“退出登录”和“关于”菜单。
+- 将“关于”和“退出登录”迁移到设置页面内部，并同时适配桌面端侧栏与移动端页面。
+
+### 调整
+
+- 设置页面的“关于”和“退出登录”与其他菜单项使用一致的间距和黑灰色视觉样式。
+- 版本信息移动到设置操作区最底部，并继续从后端构建版本动态读取，避免界面版本号与实际版本不一致。
+
 ## [1.6.1] - 2026-07-18
 
 ### 修复
@@ -119,6 +131,7 @@ MindMemo 的首个版本，基于 Memos v0.21.0。
 - 设置页的默认服务名称统一显示为 `MindMemo`，并兼容数据库中已有的旧名称 `Memos`。
 - 设置页版本号改为构建时从根目录 `VERSION` 自动读取，避免与实际发布版本不一致。
 
+[1.7.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.7.0
 [1.6.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.6.1
 [1.6.0]: https://github.com/baduyifei/mindmemo/releases/tag/v1.6.0
 [1.5.1]: https://github.com/baduyifei/mindmemo/releases/tag/v1.5.1
