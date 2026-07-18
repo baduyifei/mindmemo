@@ -14,7 +14,12 @@ interface Props {
 const MemoVisibilityButton = ({ memo }: Props) => {
   const t = useTranslate();
   const currentUser = useCurrentUser();
-  const editable = memo.creator === currentUser?.name;
+
+  if (!currentUser) {
+    return null;
+  }
+
+  const editable = memo.creator === currentUser.name;
   const label = t(`memo.visibility.${convertVisibilityToString(memo.visibility).toLowerCase()}` as any);
   const displayedVisibility = memo.visibility === Visibility.PUBLIC ? Visibility.PUBLIC : Visibility.PRIVATE;
 

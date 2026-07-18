@@ -1,13 +1,13 @@
 # MindMemo
 
-[![Version](https://img.shields.io/badge/version-v1.6.0-2563eb)](https://github.com/baduyifei/mindmemo/releases)
+[![Version](https://img.shields.io/badge/version-v1.6.1-2563eb)](https://github.com/baduyifei/mindmemo/releases)
 [![Container Images](https://github.com/baduyifei/mindmemo/actions/workflows/publish-container.yml/badge.svg)](https://github.com/baduyifei/mindmemo/actions/workflows/publish-container.yml)
 [![Upstream](https://img.shields.io/badge/upstream-Memos%20v0.21.0-52525b)](https://github.com/usememos/memos/tree/v0.21.0)
 [![License](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
 
 MindMemo 是一个面向个人知识记录的轻量、自托管备忘录应用。项目基于开源项目 [Memos](https://github.com/usememos/memos) v0.21.0，并针对个人使用场景增加了月历与年度热力图、日期与可见性智能筛选、备忘录可见性标识、桌面端双击编辑和稳定性修复。
 
-> 当前 MindMemo 版本：`v1.6.0`<br>
+> 当前 MindMemo 版本：`v1.6.1`<br>
 > 上游基础版本：`Memos v0.21.0`
 
 ## MindMemo 的主要改动
@@ -27,7 +27,7 @@ MindMemo 是一个面向个人知识记录的轻量、自托管备忘录应用�
 - 统计信息中的 `Days` 按实际有备忘录的日期计数。
 - 点击月历标题可打开年度备忘录热力图，并支持年份切换与日期筛选。
 - 主页右侧提供“仅公开”和“仅私有”智能筛选，并可与日期、标签和搜索条件叠加使用。
-- 所有备忘录卡片常驻显示公开地球或私有锁图标，并保留原有可见性切换功能。
+- 登录后，所有备忘录卡片常驻显示公开地球或私有锁图标，并保留原有可见性切换功能；未登录访客不显示公开地球图标。
 - 备忘录卡片右上角只保留可见性和更多菜单；评论与添加表情收纳到更多菜单中，并统一管理操作顺序。
 - 桌面端可双击备忘录卡片的普通区域或文字内容直接进入编辑；交互控件、引用及附件区域不会误触发。
 - 修复并发读取数据库时删除备忘录可能误报失败的问题；物理压缩改为离线维护。
@@ -39,16 +39,16 @@ GitHub Actions 会为 `linux/amd64` 和 `linux/arm64` 自动构建同一版本�
 - GitHub Container Registry：`ghcr.io/baduyifei/mindmemo`
 - Docker Hub：`baduyifei/mindmemo`
 
-两个仓库中的镜像内容和版本标签保持一致。推荐在生产部署中使用明确的版本标签，例如 `1.6.0`；`latest` 始终对应 `main` 分支最近一次成功构建。
+两个仓库中的镜像内容和版本标签保持一致。推荐在生产部署中使用明确的版本标签，例如 `1.6.1`；`latest` 始终对应 `main` 分支最近一次成功构建。
 
 任选一个镜像仓库拉取即可：
 
 ```bash
 # GitHub Container Registry
-docker pull ghcr.io/baduyifei/mindmemo:1.6.0
+docker pull ghcr.io/baduyifei/mindmemo:1.6.1
 
 # 或 Docker Hub
-docker pull baduyifei/mindmemo:1.6.0
+docker pull baduyifei/mindmemo:1.6.1
 ```
 
 ## 快速开始（macOS + Docker Desktop）
@@ -63,12 +63,12 @@ docker run -d \
   --restart unless-stopped \
   -p 52301:5230 \
   -v "$HOME/.mindmemo:/var/opt/memos" \
-  ghcr.io/baduyifei/mindmemo:1.6.0
+  ghcr.io/baduyifei/mindmemo:1.6.1
 ```
 
 浏览器打开：<http://localhost:52301/>
 
-如需使用 Docker Hub，将最后一行镜像名称替换为 `baduyifei/mindmemo:1.6.0`。
+如需使用 Docker Hub，将最后一行镜像名称替换为 `baduyifei/mindmemo:1.6.1`。
 
 ### 2. 常用管理命令
 
@@ -91,7 +91,7 @@ docker start mindmemo
 ```yaml
 services:
   mindmemo:
-    image: ghcr.io/baduyifei/mindmemo:1.6.0
+    image: ghcr.io/baduyifei/mindmemo:1.6.1
     container_name: mindmemo
     environment:
       - TZ=Asia/Shanghai
@@ -110,7 +110,7 @@ docker compose up -d
 
 `./data` 是本机数据目录，容器内的 `/var/opt/memos` 是 Memos v0.21.0 的兼容数据目录。不要把真实数据库、附件或备份提交到 Git 仓库。
 
-如需使用 Docker Hub，将 `image` 改为 `baduyifei/mindmemo:1.6.0`。
+如需使用 Docker Hub，将 `image` 改为 `baduyifei/mindmemo:1.6.1`。
 
 ## 数据备份
 
